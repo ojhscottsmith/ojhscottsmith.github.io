@@ -1,0 +1,36 @@
+<!-- 
+Owen Scott-Smith
+09/03/24
+Computer Graphics
+This html file calls the Lab2.js file in order to get the current date
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script type="text/javascript" src="Lab2.js"></script>
+  </head>
+  <body>
+    <form>
+      <input
+        type="button"
+        name="Alert"
+        value="Date-Time in Alert Pop-up"
+        onclick="GetDateandTimeAlert();"
+      />
+      <input
+        type="button"
+        name="array"
+        value="Date-Time on Page"
+        onclick="GetDateandTime();"
+      />
+      <select name="TypeofHours" id="24/12">
+        <option value="12 Hours">12 Hours</option>
+        <option value="24 Hours">24 Hours</option>
+      </select>
+    </form>
+    <div id="CountGoesHere">The count goes here</div>
+  </body>
+</html>
