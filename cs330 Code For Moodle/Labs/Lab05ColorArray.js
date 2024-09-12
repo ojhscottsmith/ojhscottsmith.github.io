@@ -1,3 +1,8 @@
+/* 
+Owen Scott-Smith
+09/12/24
+Computer Graphics
+*/
 "use strict";
 var gl;
 var points;
