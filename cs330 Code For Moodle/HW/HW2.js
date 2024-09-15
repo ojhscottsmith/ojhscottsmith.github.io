@@ -6,9 +6,6 @@ Computer Graphics
 "use strict";
 var gl;
 var points;
-var colors;
-var sliderVal = 1;
-
 init();
 
 function init() {
@@ -19,17 +16,7 @@ function init() {
     alert("WebGL isn't available");
   }
 
-  points = [
-    vec2(-0.95, 0.95),
-    vec2(0, 0.95),
-    vec2(0.95, 0.95),
-    vec2(-0.95, 0.0),
-    vec2(0, 0.0),
-    vec2(0.95, 0.0),
-    vec2(-0.95, -0.95),
-    vec2(0.0, -0.95),
-    vec2(0.95, -0.95),
-  ];
+  points = [vec2(-1.0, 0.0), vec2(1.0, 0.0)];
 
   //
   //  Configure WebGL
@@ -54,14 +41,6 @@ function init() {
   gl.vertexAttribPointer(positionLoc, 2, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(positionLoc);
 
-  // a color buffer is created and attached
-  var cbufferId = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, cbufferId);
-  gl.bufferData(gl.ARRAY_BUFFER, flatten(colors), gl.STATIC_DRAW);
-  var colorLoc = gl.getAttribLocation(program, "aColor");
-  gl.vertexAttribPointer(colorLoc, 4, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(colorLoc);
-
   // slider event listener
   document.getElementById("Range").onchange = function (event) {
     sliderVal = parseInt(event.target.value);
@@ -77,5 +56,5 @@ function render() {
   // use the variable from the slider event listener to determine how many
   // points to render
 
-  gl.drawArrays(gl.POINTS, 0, sliderVal);
+  gl.drawArrays(gl.LINES, 0, points.length);
 }
