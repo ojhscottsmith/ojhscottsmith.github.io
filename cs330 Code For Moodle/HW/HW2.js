@@ -6,6 +6,7 @@ Computer Graphics
 "use strict";
 var gl;
 var points;
+var sliderVal;
 init();
 
 function init() {
@@ -16,7 +17,7 @@ function init() {
     alert("WebGL isn't available");
   }
 
-  points = [vec2(-1.0, 0.0), vec2(1.0, 0.0)];
+  points = [vec2(-1.0, 0.0), vec2(1.0, 0.0), vec2(0.33, 0.5), vec2(-0.33, 0.5)];
 
   //
   //  Configure WebGL
@@ -52,9 +53,11 @@ function init() {
 
 function render() {
   gl.clear(gl.COLOR_BUFFER_BIT);
-
   // use the variable from the slider event listener to determine how many
   // points to render
-
-  gl.drawArrays(gl.LINES, 0, points.length);
+  if (sliderVal == 0) {
+    gl.drawArrays(gl.LINES, 0, points.length + 2);
+  } else {
+    gl.drawArrays(gl.LINES, 0, points.length * 2);
+  }
 }
