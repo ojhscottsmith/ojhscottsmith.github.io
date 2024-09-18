@@ -7,7 +7,7 @@ Computer Graphics
 var gl;
 var points;
 var sliderVal;
-var positions;
+var positions = [6];
 init();
 
 function init() {
@@ -18,11 +18,9 @@ function init() {
     alert("WebGL isn't available");
   }
 
-  positions = [];
-
   var left = vec2(-1.0, 0.0);
   var right = vec2(1.0, 0.0);
-  recursion(left, right, sliderVal);
+
   function recursion(left, right, count) {
     var sqrt3d2 = 0.87;
     var len = -0.66;
@@ -154,6 +152,8 @@ function init() {
   // slider event listener
   document.getElementById("Range").onchange = function (event) {
     sliderVal = parseInt(event.target.value);
+    positions = [];
+    recursion(left, right, sliderVal);
     render();
   };
 
@@ -164,6 +164,5 @@ function render() {
   gl.clear(gl.COLOR_BUFFER_BIT);
   // use the variable from the slider event listener to determine how many
   // points to render
-
   gl.drawArrays(gl.LINES, 0, positions.length);
 }
