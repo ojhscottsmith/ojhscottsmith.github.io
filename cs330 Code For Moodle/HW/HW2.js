@@ -18,15 +18,30 @@ function init() {
     alert("WebGL isn't available");
   }
 
+  positions = [];
+
+  var left = vec2(-1.0, 0.0);
+  var right = vec2(1.0, 0.0);
+  recursion(left, right, sliderVal);
   function recursion(left, right, count) {
     var sqrt3d2 = 0.87;
     var len = -0.66;
     var pos1 = mix(left, right, 0.33);
     var pos2 = mix(left, right, 0.67);
+
     var pos3 = mix(left, pos1, 0.33);
     var pos4 = mix(left, pos1, 0.67);
     var pos5 = mix(pos2, right, 0.33);
     var pos6 = mix(pos2, right, 0.67);
+
+    var pos7 = mix(left, pos3, 0.33);
+    var pos8 = mix(left, pos3, 0.67);
+    var pos9 = mix(pos4, pos1, 0.33);
+    var pos10 = mix(pos4, pos1, 0.67);
+    var pos11 = mix(pos2, pos5, 0.33);
+    var pos12 = mix(pos2, pos5, 0.67);
+    var pos13 = mix(pos6, right, 0.33);
+    var pos14 = mix(pos6, right, 0.67);
 
     if (count == 0) {
       positions.push(left);
@@ -45,6 +60,51 @@ function init() {
       positions.push(pos2);
       positions.push(right);
     } else if (count == 2) {
+      positions.push(left);
+      positions.push(pos7);
+      positions.push(pos7);
+      positions.push(vec2(-0.89, 0.05));
+      positions.push(vec2(-0.89, 0.05));
+      positions.push(pos8);
+      positions.push(pos8);
+      positions.push(pos3);
+      positions.push(pos3);
+      positions.push(vec2(-0.67, 0.2));
+      positions.push(vec2(-0.67, 0.2));
+      positions.push(pos4);
+      positions.push(pos4);
+      positions.push(pos9);
+      positions.push(pos9);
+      positions.push(vec2(-0.45, 0.05));
+      positions.push(vec2(-0.45, 0.05));
+      positions.push(pos10);
+      positions.push(pos10);
+      positions.push(pos1);
+      positions.push(pos1);
+      positions.push(vec2(0, 0.571));
+      positions.push(vec2(0, 0.571));
+      positions.push(pos2);
+      positions.push(pos2);
+      positions.push(pos11);
+      positions.push(pos11);
+      positions.push(vec2(0.45, 0.05));
+      positions.push(vec2(0.45, 0.05));
+      positions.push(pos12);
+      positions.push(pos12);
+      positions.push(pos5);
+      positions.push(pos5);
+      positions.push(vec2(0.67, 0.2));
+      positions.push(vec2(0.67, 0.2));
+      positions.push(pos6);
+      positions.push(pos6);
+      positions.push(pos13);
+      positions.push(pos13);
+      positions.push(vec2(0.89, 0.05));
+      positions.push(vec2(0.89, 0.05));
+      positions.push(pos14);
+      positions.push(pos14);
+      positions.push(right);
+    } else if (count == 3) {
       positions.push(left);
       positions.push(pos3);
       positions.push(pos3);
@@ -101,12 +161,6 @@ function init() {
 }
 
 function render() {
-  positions = [];
-
-  var left = vec2(-1.0, 0.0);
-  var right = vec2(1.0, 0.0);
-  recursion(left, right, sliderVal);
-
   gl.clear(gl.COLOR_BUFFER_BIT);
   // use the variable from the slider event listener to determine how many
   // points to render
