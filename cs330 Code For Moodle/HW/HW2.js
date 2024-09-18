@@ -7,6 +7,7 @@ Computer Graphics
 var gl;
 var points;
 var sliderVal;
+var positions;
 init();
 
 function init() {
@@ -17,7 +18,55 @@ function init() {
     alert("WebGL isn't available");
   }
 
-  points = [vec2(-1.0, 0.0), vec2(1.0, 0.0), vec2(0.33, 0.5), vec2(-0.33, 0.5)];
+  function recursion(left, right, count) {
+    var sqrt3d2 = 0.87;
+    var len = -0.66;
+    var pos1 = mix(left, right, 0.33);
+    var pos2 = mix(left, right, 0.67);
+    var pos3 = mix(left, pos1, 0.33);
+    var pos4 = mix(left, pos1, 0.67);
+    var pos5 = mix(pos2, right, 0.33);
+    var pos6 = mix(pos2, right, 0.67);
+
+    if (count == 0) {
+      positions.push(left);
+      positions.push(pos1);
+      positions.push(pos1);
+      positions.push(pos2);
+      positions.push(pos2);
+      positions.push(right);
+    } else if (count == 1) {
+      positions.push(left);
+      positions.push(pos1);
+      positions.push(pos1);
+      positions.push(vec2(0, 0.571));
+      positions.push(vec2(0, 0.571));
+      positions.push(pos2);
+      positions.push(pos2);
+      positions.push(right);
+    } else if (count == 2) {
+      positions.push(left);
+      positions.push(pos3);
+      positions.push(pos3);
+      positions.push(vec2(-0.67, 0.2));
+      positions.push(vec2(-0.67, 0.2));
+      positions.push(pos4);
+      positions.push(pos4);
+      positions.push(pos1);
+      positions.push(pos1);
+      positions.push(vec2(0, 0.571));
+      positions.push(vec2(0, 0.571));
+      positions.push(pos2);
+      positions.push(pos2);
+      positions.push(pos5);
+      positions.push(pos5);
+      positions.push(vec2(0.67, 0.2));
+      positions.push(vec2(0.67, 0.2));
+      positions.push(pos6);
+      positions.push(pos6);
+      positions.push(right);
+    }
+  }
 
   //
   //  Configure WebGL
@@ -34,7 +83,7 @@ function init() {
 
   var bufferId = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
-  gl.bufferData(gl.ARRAY_BUFFER, flatten(points), gl.STATIC_DRAW);
+  gl.bufferData(gl.ARRAY_BUFFER, flatten(positions), gl.STATIC_DRAW);
 
   // Associate out shader variables with our data buffer
 
@@ -52,12 +101,15 @@ function init() {
 }
 
 function render() {
+  positions = [];
+
+  var left = vec2(-1.0, 0.0);
+  var right = vec2(1.0, 0.0);
+  recursion(left, right, sliderVal);
+
   gl.clear(gl.COLOR_BUFFER_BIT);
   // use the variable from the slider event listener to determine how many
   // points to render
-  if (sliderVal == 0) {
-    gl.drawArrays(gl.LINES, 0, points.length + 2);
-  } else {
-    gl.drawArrays(gl.LINES, 0, points.length * 2);
-  }
+
+  gl.drawArrays(gl.LINES, 0, positions.length);
 }
