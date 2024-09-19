@@ -22,8 +22,6 @@ function init() {
   var right = vec2(1.0, 0.0);
 
   function recursion(left, right, count) {
-    var sqrt3d2 = 0.87;
-    var len = -0.66;
     var pos1 = mix(left, right, 0.33);
     var pos2 = mix(left, right, 0.67);
 
