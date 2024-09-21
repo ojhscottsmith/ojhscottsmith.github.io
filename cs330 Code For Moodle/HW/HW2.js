@@ -7,7 +7,7 @@ Computer Graphics
 var gl;
 var points;
 var sliderVal;
-var positions = [6];
+var positions = [];
 init();
 
 function init() {
@@ -20,6 +20,9 @@ function init() {
 
   var left = vec2(-1.0, 0.0);
   var right = vec2(1.0, 0.0);
+  if (positions[0] == null) {
+    recursion(left, right, 0);
+  }
 
   function recursion(left, right, count) {
     var pos1 = mix(left, right, 0.33);
