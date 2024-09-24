@@ -16,84 +16,8 @@ function init() {
   if (!gl) {
     alert("WebGL isn't available");
   }
-  var left = vec2(-1.0, 0.0);
-  var right = vec2(1.0, 0.0);
-  var pos1 = mix(left, right, 0.33);
-  var pos2 = mix(left, right, 0.67);
-
-  var pos3 = mix(left, pos1, 0.33);
-  var pos4 = mix(left, pos1, 0.67);
-  var pos5 = mix(pos2, right, 0.33);
-  var pos6 = mix(pos2, right, 0.67);
-
-  var pos7 = mix(left, pos3, 0.33);
-  var pos8 = mix(left, pos3, 0.67);
-  var pos9 = mix(pos4, pos1, 0.33);
-  var pos10 = mix(pos4, pos1, 0.67);
-  var pos11 = mix(pos2, pos5, 0.33);
-  var pos12 = mix(pos2, pos5, 0.67);
-  var pos13 = mix(pos6, right, 0.33);
-  var pos14 = mix(pos6, right, 0.67);
-
-  var sqrt3d2 = 0.87;
-  var length = pos2 - pos1;
-  var y = length * sqrt3d2;
 
   points = [
-    // vec2(-1.0, 0.0),
-    // vec2(-0.33, 0.0),
-    // vec2(-0.33, 0.0),
-    // vec2(0.0, 0.0),
-    // vec2(0.0, 0.0),
-    // vec2(0.33, 0.0),
-    // vec2(0.33, 0.0),
-    // vec2(1.0, 0.0),
-
-    left,
-    pos7,
-    pos7,
-    vec2(-0.89, 0.05),
-    vec2(-0.89, 0.05),
-    pos8,
-    pos8,
-    pos3,
-    pos3,
-    vec2(-0.67, 0.2),
-    vec2(-0.67, 0.2),
-    pos4,
-    pos4,
-    pos9,
-    pos9,
-    vec2(-0.45, 0.05),
-    vec2(-0.45, 0.05),
-    pos10,
-    pos10,
-    pos1,
-    pos1,
-    vec2(0, 0.571),
-    vec2(0, 0.571),
-    pos2,
-    pos2,
-    pos11,
-    pos11,
-    vec2(0.45, 0.05),
-    vec2(0.45, 0.05),
-    pos12,
-    pos12,
-    pos5,
-    pos5,
-    vec2(0.67, 0.2),
-    vec2(0.67, 0.2),
-    pos6,
-    pos6,
-    pos13,
-    pos13,
-    vec2(0.89, 0.05),
-    vec2(0.89, 0.05),
-    pos14,
-    pos14,
-    right,
-
     // vec2(-0.95, 0.1),
     // vec2(-0.95, 1),
     // vec2(0.05, 0.1),
@@ -104,9 +28,9 @@ function init() {
     // vec2(-0.95, 1),
 
     // vec2(0.2, 1),
-    // vec2(0.35, 0.1),
-    // vec2(0.35, 0.1),
-    // vec2(0.6, 0.8),
+    vec2(0.35, 0.1),
+    vec2(0.35, 0.1),
+    vec2(0.6, 0.8),
     // vec2(0.6, 0.8),
     // vec2(0.8, 0.1),
     // vec2(0.8, 0.1),
@@ -143,10 +67,10 @@ function render() {
   gl.clear(gl.COLOR_BUFFER_BIT);
 
   //gl.drawArrays(gl.POINTS, 0, points.length);
-  gl.drawArrays(gl.LINES, 0, points.length);
+  //gl.drawArrays(gl.LINES, 0, points.length);
   //gl.drawArrays(gl.LINE_STRIP, 0, points.length);
   //gl.drawArrays(gl.LINE_LOOP, 0, points.length);
-  //gl.drawArrays(gl.TRIANGLES, 0, points.length);
+  gl.drawArrays(gl.TRIANGLES, 0, points.length);
   //gl.drawArrays(gl.TRIANGLE_STRIP, 0, points.length);
   //gl.drawArrays(gl.TRIANGLE_FAN, 0, points.length);
 }
