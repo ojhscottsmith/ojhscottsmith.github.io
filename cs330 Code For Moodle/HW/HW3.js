@@ -14,10 +14,6 @@ var canvas;
 var color = vec4(0.0, 0.0, 1.0, 1.0);
 var colorLoc;
 
-var L;
-
-var V;
-
 init();
 
 function init() {
@@ -66,7 +62,6 @@ function init() {
   // Associate out shader variables with our data buffer
 
   var lpositionLoc = gl.getAttribLocation(program, "lPosition");
-  var vpositionLoc = gl.getAttribLocation(program, "vPosition");
   gl.vertexAttribPointer(lpositionLoc, 2, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(lpositionLoc);
 
@@ -98,7 +93,7 @@ function init() {
 
   // Associate out shader variables with our data buffer
 
-  var positionLoc = gl.getAttribLocation(program, "vPosition");
+  var vpositionLoc = gl.getAttribLocation(program, "vPosition");
   gl.vertexAttribPointer(vpositionLoc, 2, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(vpositionLoc);
 
