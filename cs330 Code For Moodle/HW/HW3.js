@@ -11,6 +11,13 @@ var morph = true;
 
 var canvas;
 
+var thetaLoc;
+var theta;
+
+var V;
+
+var L;
+
 var color = vec4(0.0, 0.0, 1.0, 1.0);
 var colorLoc;
 
@@ -33,6 +40,7 @@ function init() {
   var program = initShaders(gl, "vertex-shader", "fragment-shader");
   gl.useProgram(program);
 
+  // prettier-ignore
   var L = [
     vec2(-0.5, 0.8),
     vec2(-0.5, -0.8),
@@ -50,7 +58,7 @@ function init() {
     vec2(-0.2, 0.8),
 
     vec2(-0.2, 0.8),
-    vec2(-0.5, 0.8),
+    vec2(-0.5, 0.8)
   ];
 
   // Load the data into the GPU
@@ -65,6 +73,7 @@ function init() {
   gl.vertexAttribPointer(lpositionLoc, 2, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(lpositionLoc);
 
+  // prettier-ignore
   var V = [
     vec2(-0.8, 0.8),
     vec2(0.0, -0.8),
@@ -82,7 +91,7 @@ function init() {
     vec2(-0.5, 0.8),
 
     vec2(-0.8, 0.8),
-    vec2(-0.5, 0.8),
+    vec2(-0.5, 0.8)
   ];
 
   // Load the data into the GPU
@@ -119,9 +128,9 @@ function render() {
 
   gl.uniform4fv(colorLoc, color);
 
-  gl.drawArrays(gl.LINES, 0, V.Length);
+  gl.drawArrays(gl.LINES, 0, 30);
 
-  setTimeout(function () {
-    requestAnimationFrame(render);
-  }, delay);
+  // setTimeout(function () {
+  //   requestAnimationFrame(render);
+  // }, delay);
 }

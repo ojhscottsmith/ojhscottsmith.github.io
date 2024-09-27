@@ -18,10 +18,10 @@ uniform float t;
 
 void main(){
 
-    gl_position.x = t*lposition.x +(1.0-t)*vPosition.x;
-    gl_position.y = t*lposition.y +(1.0-t)*vPosition.y;
-    gl_position.z = 0.0;
-    gl_position.w = 1.0
+    gl_Position.x = t*lPosition.x +(1.0-t)*vPosition.x;
+    gl_Position.y = t*lPosition.y +(1.0-t)*vPosition.y;
+    gl_Position.z = 0.0;
+    gl_Position.w = 1.0;
 
 
 
