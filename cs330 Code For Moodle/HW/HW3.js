@@ -9,14 +9,14 @@ var gl;
 
 var morph = true;
 
-var canvas;
-
 var thetaLoc;
-var theta;
+var theta = 0.0;
 
-var V;
+// var t;
+// var P;
+// var Q;
 
-var L;
+// var V;
 
 var color = vec4(0.0, 0.0, 1.0, 1.0);
 var colorLoc;
@@ -40,7 +40,6 @@ function init() {
   var program = initShaders(gl, "vertex-shader", "fragment-shader");
   gl.useProgram(program);
 
-  // prettier-ignore
   var L = [
     vec2(-0.5, 0.8),
     vec2(-0.5, -0.8),
@@ -58,7 +57,7 @@ function init() {
     vec2(-0.2, 0.8),
 
     vec2(-0.2, 0.8),
-    vec2(-0.5, 0.8)
+    vec2(-0.5, 0.8),
   ];
 
   // Load the data into the GPU
@@ -69,9 +68,9 @@ function init() {
 
   // Associate out shader variables with our data buffer
 
-  var lpositionLoc = gl.getAttribLocation(program, "lPosition");
-  gl.vertexAttribPointer(lpositionLoc, 2, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(lpositionLoc);
+  var lLoc = gl.getAttribLocation(program, "lPosition");
+  gl.vertexAttribPointer(lLoc, 2, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(lLoc);
 
   // prettier-ignore
   var V = [
@@ -102,16 +101,16 @@ function init() {
 
   // Associate out shader variables with our data buffer
 
-  var vpositionLoc = gl.getAttribLocation(program, "vPosition");
-  gl.vertexAttribPointer(vpositionLoc, 2, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(vpositionLoc);
+  var vLoc = gl.getAttribLocation(program, "vPosition");
+  gl.vertexAttribPointer(vLoc, 2, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(vLoc);
 
   thetaLoc = gl.getUniformLocation(program, "t");
   colorLoc = gl.getUniformLocation(program, "aColor");
 
   //define the uniform variable in the shader, aColor
 
-  // button listener here, toggle rotation
+  // button listener here, toggle morph
   document.getElementById("Morph").onclick = function () {
     morph = !morph;
   };
@@ -122,13 +121,13 @@ function init() {
 function render() {
   gl.clear(gl.COLOR_BUFFER_BIT);
 
-  theta += morph ? 0.1 : 0.0;
+  // theta += morph ? 0.1 : 0.0;
 
-  gl.uniform1f(thetaLoc, theta);
+  // gl.uniform1f(thetaLoc, theta);
 
   gl.uniform4fv(colorLoc, color);
 
-  gl.drawArrays(gl.LINES, 0, 30);
+  gl.drawArrays(gl.LINES, 0, 20);
 
   // setTimeout(function () {
   //   requestAnimationFrame(render);
