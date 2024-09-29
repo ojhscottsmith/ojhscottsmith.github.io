@@ -12,7 +12,50 @@ var morph = true;
 var thetaLoc;
 var theta = 0.0;
 
-var delay = 100;
+var test = 0.02;
+
+var delay = 110;
+
+var L = [
+  vec2(-0.5, 0.8),
+  vec2(-0.5, -0.8),
+
+  vec2(-0.5, -0.8),
+  vec2(0.5, -0.8),
+
+  vec2(0.5, -0.8),
+  vec2(0.5, -0.5),
+
+  vec2(0.5, -0.5),
+  vec2(-0.2, -0.5),
+
+  vec2(-0.2, -0.5),
+  vec2(-0.2, 0.8),
+
+  vec2(-0.2, 0.8),
+  vec2(-0.5, 0.8),
+];
+
+var V = [
+  vec2(-0.8, 0.8),
+  vec2(0.0, -0.8),
+
+  vec2(0.0, -0.8),
+  vec2(0.8, 0.8),
+
+  vec2(0.8, 0.8),
+  vec2(0.5, 0.8),
+
+  vec2(0.5, 0.8),
+  vec2(0.0, -0.2),
+
+  vec2(0.0, -0.2),
+  vec2(-0.5, 0.8),
+
+  vec2(-0.8, 0.8),
+  vec2(-0.5, 0.8),
+];
+var i = 0;
 
 // var t;
 // var P;
@@ -42,26 +85,6 @@ function init() {
   var program = initShaders(gl, "vertex-shader", "fragment-shader");
   gl.useProgram(program);
 
-  var L = [
-    vec2(-0.5, 0.8),
-    vec2(-0.5, -0.8),
-
-    vec2(-0.5, -0.8),
-    vec2(0.5, -0.8),
-
-    vec2(0.5, -0.8),
-    vec2(0.5, -0.5),
-
-    vec2(0.5, -0.5),
-    vec2(-0.2, -0.5),
-
-    vec2(-0.2, -0.5),
-    vec2(-0.2, 0.8),
-
-    vec2(-0.2, 0.8),
-    vec2(-0.5, 0.8),
-  ];
-
   // Load the data into the GPU
 
   var vBuffer = gl.createBuffer();
@@ -75,25 +98,6 @@ function init() {
   gl.enableVertexAttribArray(lLoc);
 
   // prettier-ignore
-  var V = [
-    vec2(-0.8, 0.8),
-    vec2(0.0, -0.8),
-
-    vec2(0.0, -0.8),
-    vec2(0.8, 0.8),
-
-    vec2(0.8, 0.8),
-    vec2(0.5, 0.8),
-
-    vec2(0.5, 0.8),
-    vec2(0.0, -0.2),
-
-    vec2(0.0, -0.2),
-    vec2(-0.5, 0.8),
-
-    vec2(-0.8, 0.8),
-    vec2(-0.5, 0.8)
-  ];
 
   // Load the data into the GPU
 
@@ -114,24 +118,35 @@ function init() {
 
   // button listener here, toggle morph
   document.getElementById("Morph").onclick = function () {
+    i = 0;
     morph = !morph;
+    if (morph) {
+      test = 0.02;
+    } else if (!morph) {
+      test = -0.02;
+    }
+    render();
   };
 
   render();
 }
 
 function render() {
+  i += 1;
+
   gl.clear(gl.COLOR_BUFFER_BIT);
 
-  theta += morph ? 0.02 : 0.0;
-
+  //theta += morph ? test : 0.0;
+  theta += test;
   gl.uniform1f(thetaLoc, theta);
 
   gl.uniform4fv(colorLoc, color);
 
   gl.drawArrays(gl.LINE_STRIP, 0, 12);
 
-  setTimeout(function () {
-    requestAnimationFrame(render);
-  }, delay);
+  if (i < 50) {
+    setTimeout(function () {
+      requestAnimationFrame(render);
+    }, delay);
+  }
 }
