@@ -12,6 +12,8 @@ var morph = true;
 var thetaLoc;
 var theta = 0.0;
 
+var delay = 100;
+
 // var t;
 // var P;
 // var Q;
@@ -121,15 +123,15 @@ function init() {
 function render() {
   gl.clear(gl.COLOR_BUFFER_BIT);
 
-  // theta += morph ? 0.1 : 0.0;
+  theta += morph ? 0.02 : 0.0;
 
-  // gl.uniform1f(thetaLoc, theta);
+  gl.uniform1f(thetaLoc, theta);
 
   gl.uniform4fv(colorLoc, color);
 
-  gl.drawArrays(gl.LINES, 0, 20);
+  gl.drawArrays(gl.LINE_STRIP, 0, 12);
 
-  // setTimeout(function () {
-  //   requestAnimationFrame(render);
-  // }, delay);
+  setTimeout(function () {
+    requestAnimationFrame(render);
+  }, delay);
 }
