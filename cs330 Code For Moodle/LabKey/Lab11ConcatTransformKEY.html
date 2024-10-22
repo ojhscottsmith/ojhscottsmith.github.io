@@ -30,21 +30,21 @@ main()
 
     // Rotate on Z-axis: this matrix is column-major
     mat4 rz = mat4(c.z, s.z, 0.0, 0.0,
-		    -s.z,  c.z, 0.0, 0.0,
-		    0.0,  0.0, 1.0, 0.0,
-		    0.0,  0.0, 0.0, 1.0);
+		               -s.z,  c.z, 0.0, 0.0,
+		               0.0,  0.0, 1.0, 0.0,
+		               0.0,  0.0, 0.0, 1.0);
 
     // Translate in x direction: this matrix is column-major
-    mat4 Tx = mat4(1.0        , 0.0 , 0.0 , 0.0,
-		   0.0        , 1.0 , 0.0 , 0.0,
-		   0.0        , 0.0 , 1.0 , 0.0,
-		   uTranslate , 0.0 , 0.0 , 1.0);
+    mat4 Tx = mat4(1.0, 0.0 , 0.0 , 0.0,
+		               0.0, 1.0 , 0.0 , 0.0,
+		               0.0, 0.0 , 1.0 , 0.0,
+		               uTranslate , 0.0 , 0.0 , 1.0);
 
     // Translate in x direction: this matrix is column-major
-    mat4 Sx = mat4(uScale     , 0.0 , 0.0 , 0.0,
-		   0.0        , 1.0 , 0.0 , 0.0,
-		   0.0        , 0.0 , 1.0 , 0.0,
-		   0.0        , 0.0 , 0.0 , 1.0);
+    mat4 Sx = mat4(uScale, 0.0 , 0.0 , 0.0,
+		               0.0, 1.0 , 0.0 , 0.0,
+		               0.0, 0.0 , 1.0 , 0.0,
+		               0.0, 0.0 , 0.0 , 1.0);
 
     //gl_Position = rz * aPosition;
     //gl_Position = Tx * aPosition;
