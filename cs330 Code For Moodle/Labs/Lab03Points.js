@@ -17,12 +17,19 @@ function init() {
   }
 
   points = [
-    vec2(1, -1),
-    vec2(-0.5, 1),
-    vec2(-1, 0.5),
-    vec2(-0.25, -0.75),
-    vec2(0.25, 0.75),
-    vec2(1, 0.25),
+    // vec2(-0.75, 0.75),
+    // vec2(0.75, 0.75),
+    // vec2(0.75, 0.5),
+    // vec2(0.25, 0.5),
+    // vec2(0.25, -0.5),
+    // vec2(0.75, -0.5),
+    // vec2(0.75, -0.75),
+    // vec2(-0.75, -0.75),
+    // vec2(-0.75, -0.5),
+    // vec2(-0.25, -0.5),
+    // vec2(-0.25, 0.5),
+    // vec2(-0.75, 0.5),
+    // vec2(-0.75, 0.75),
   ];
 
   //
@@ -53,5 +60,5 @@ function init() {
 
 function render() {
   gl.clear(gl.COLOR_BUFFER_BIT);
-  gl.drawArrays(gl.POINTS, 0, points.length);
+  gl.drawArrays(gl.TRIANGLES, 0, points.length);
 }
