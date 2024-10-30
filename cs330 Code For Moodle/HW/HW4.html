@@ -17,9 +17,11 @@
 #version 300 es
 
 in  vec4 lPosition;
-in vec4 uPosition
+in vec4 uPosition;
 in  vec4 aColor;
 out vec4 vColor;
+
+vec4 tmpPosition;
 
 uniform vec3 uTheta;
 uniform float t;
@@ -48,9 +50,11 @@ void main()
 		    -s.z,  c.z, 0.0, 0.0,
 		    0.0,  0.0, 1.0, 0.0,
 		    0.0,  0.0, 0.0, 1.0);
+    
+    tmpPosition = t*lPosition+(1.0-t)*uPosition;
 
     vColor = aColor;
-    gl_Position = rz * ry * rx * aPosition;
+    gl_Position = rz * ry * rx * tmpPosition;
     gl_Position.z = -gl_Position.z;
 }
 </script>

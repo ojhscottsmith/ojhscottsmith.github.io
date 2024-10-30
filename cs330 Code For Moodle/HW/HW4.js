@@ -3,7 +3,7 @@
 var canvas;
 var gl;
 
-var numPositions = 72;
+var numPositions = 144;
 
 var positions = [];
 var positions2 = [];
@@ -26,25 +26,43 @@ var morph = true;
 var rotate = false;
 
 var bigCube = [
-  vec4(-0.5, -0.5, 0.5, 1.0),
-  vec4(-0.5, 0.5, 0.5, 1.0),
-  vec4(0.5, 0.5, 0.5, 1.0),
-  vec4(0.5, -0.5, 0.5, 1.0),
-  vec4(-0.5, -0.5, -0.5, 1.0),
-  vec4(-0.5, 0.5, -0.5, 1.0),
-  vec4(0.5, 0.5, -0.5, 1.0),
-  vec4(0.5, -0.5, -0.5, 1.0),
+  vec4(-0.25, -0.8, 0.5, 1.0),
+  vec4(-0.25, 0.8, 0.5, 1.0),
+  vec4(0.25, 0.8, 0.5, 1.0),
+  vec4(0.25, -0.8, 0.5, 1.0),
+  vec4(-0.25, -0.8, -0.5, 1.0),
+  vec4(-0.25, 0.8, -0.5, 1.0),
+  vec4(0.25, 0.8, -0.5, 1.0),
+  vec4(0.25, -0.8, -0.5, 1.0),
+
+  vec4(-0.25, -1.0, 0.5, 1.0),
+  vec4(-0.25, -0.8, 0.5, 1.0),
+  vec4(0.6, -0.8, 0.5, 1.0),
+  vec4(0.6, -1.0, 0.5, 1.0),
+  vec4(-0.25, -1.0, -0.5, 1.0),
+  vec4(-0.25, -0.8, -0.5, 1.0),
+  vec4(0.6, -0.8, -0.5, 1.0),
+  vec4(0.6, -1.0, -0.5, 1.0),
 ];
 
 var smallCube = [
-  vec4(-0.1, -0.5, 0.5, 1.0),
-  vec4(-0.1, 0.5, 0.5, 1.0),
-  vec4(0.1, 0.5, 0.5, 1.0),
-  vec4(0.1, -0.5, 0.5, 1.0),
-  vec4(-0.1, -0.5, -0.5, 1.0),
-  vec4(-0.1, 0.5, -0.5, 1.0),
-  vec4(0.1, 0.5, -0.5, 1.0),
-  vec4(0.1, -0.5, -0.5, 1.0),
+  vec4(-0.25, -0.25, 0.25, 1.0),
+  vec4(-0.25, 0.25, 0.25, 1.0),
+  vec4(0.25, 0.25, 0.25, 1.0),
+  vec4(0.25, -0.25, 0.25, 1.0),
+  vec4(-0.25, -0.25, -0.25, 1.0),
+  vec4(-0.25, 0.25, -0.25, 1.0),
+  vec4(0.25, 0.25, -0.25, 1.0),
+  vec4(0.25, -0.25, -0.25, 1.0),
+
+  vec4(-0.5, -0.25, 0.25, 1.0),
+  vec4(-0.5, -0.5, 0.25, 1.0),
+  vec4(0.5, -0.5, 0.25, 1.0),
+  vec4(0.5, -0.25, 0.25, 1.0),
+  vec4(-0.5, -0.25, -0.25, 1.0),
+  vec4(-0.5, -0.5, -0.25, 1.0),
+  vec4(0.5, -0.5, -0.25, 1.0),
+  vec4(0.5, -0.25, -0.25, 1.0),
 ];
 
 var vertexColors = [
@@ -113,7 +131,7 @@ function init() {
   gl.enableVertexAttribArray(uLoc);
 
   thetaLoc = gl.getUniformLocation(program, "uTheta");
-  tloc = gl.getUniformLocation(program, "t");
+  tLoc = gl.getUniformLocation(program, "t");
   //event listeners for buttons
 
   document.getElementById("xButton").onclick = function () {
@@ -138,13 +156,21 @@ function init() {
 }
 
 function colorCube() {
-  cubenum = 0;
+  var cubenum = 0;
   quad(1, 0, 3, 2, cubenum);
   quad(2, 3, 7, 6, cubenum);
   quad(3, 0, 4, 7, cubenum);
   quad(6, 5, 1, 2, cubenum);
   quad(4, 5, 6, 7, cubenum);
   quad(5, 4, 0, 1, cubenum);
+
+  quad(9, 8, 11, 10, cubenum);
+  quad(10, 11, 15, 14, cubenum);
+  quad(11, 8, 12, 15, cubenum);
+  quad(14, 13, 9, 10, cubenum);
+  quad(12, 13, 14, 15, cubenum);
+  quad(13, 12, 8, 9, cubenum);
+
   cubenum = 1;
   quad(1, 0, 3, 2, cubenum);
   quad(2, 3, 7, 6, cubenum);
@@ -152,6 +178,13 @@ function colorCube() {
   quad(6, 5, 1, 2, cubenum);
   quad(4, 5, 6, 7, cubenum);
   quad(5, 4, 0, 1, cubenum);
+
+  quad(9, 8, 11, 10, cubenum);
+  quad(10, 11, 15, 14, cubenum);
+  quad(11, 8, 12, 15, cubenum);
+  quad(14, 13, 9, 10, cubenum);
+  quad(12, 13, 14, 15, cubenum);
+  quad(13, 12, 8, 9, cubenum);
 }
 
 function quad(a, b, c, d, cn) {
