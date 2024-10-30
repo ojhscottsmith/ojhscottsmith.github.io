@@ -8,7 +8,6 @@ var numPositions = 72;
 var positions = [];
 var positions2 = [];
 var colors = [];
-var colors2 = [];
 
 var xAxis = 0;
 var yAxis = 1;
@@ -19,11 +18,54 @@ var theta = [0, 0, 0];
 
 var thetaLoc;
 
+var tParam = 0.5;
+var tLoc;
+var deltaT = 0.01;
+var morph = true;
+
 var rotate = false;
 
-var rotatenum = 0;
+var bigCube = [
+  vec4(-0.5, -0.5, 0.5, 1.0),
+  vec4(-0.5, 0.5, 0.5, 1.0),
+  vec4(0.5, 0.5, 0.5, 1.0),
+  vec4(0.5, -0.5, 0.5, 1.0),
+  vec4(-0.5, -0.5, -0.5, 1.0),
+  vec4(-0.5, 0.5, -0.5, 1.0),
+  vec4(0.5, 0.5, -0.5, 1.0),
+  vec4(0.5, -0.5, -0.5, 1.0),
+];
 
-var cubenum = 0;
+var smallCube = [
+  vec4(-0.1, -0.5, 0.5, 1.0),
+  vec4(-0.1, 0.5, 0.5, 1.0),
+  vec4(0.1, 0.5, 0.5, 1.0),
+  vec4(0.1, -0.5, 0.5, 1.0),
+  vec4(-0.1, -0.5, -0.5, 1.0),
+  vec4(-0.1, 0.5, -0.5, 1.0),
+  vec4(0.1, 0.5, -0.5, 1.0),
+  vec4(0.1, -0.5, -0.5, 1.0),
+];
+
+var vertexColors = [
+  vec4(0.0, 0.0, 0.0, 1.0), // black
+  vec4(1.0, 0.0, 0.0, 1.0), // red
+  vec4(1.0, 1.0, 0.0, 1.0), // yellow
+  vec4(0.0, 1.0, 0.0, 1.0), // green
+  vec4(0.0, 0.0, 1.0, 1.0), // blue
+  vec4(1.0, 0.0, 1.0, 1.0), // magenta
+  vec4(0.2, 0.8, 0.7, 1.0), // blueish
+  vec4(0.5, 0.0, 1.0, 1.0), // violet
+
+  vec4(0.0, 0.0, 0.0, 1.0), // black
+  vec4(1.0, 0.0, 0.0, 1.0), // red
+  vec4(1.0, 1.0, 0.0, 1.0), // yellow
+  vec4(0.0, 1.0, 0.0, 1.0), // green
+  vec4(0.0, 0.0, 1.0, 1.0), // blue
+  vec4(1.0, 0.0, 1.0, 1.0), // magenta
+  vec4(0.2, 0.8, 0.7, 1.0), // blueish
+  vec4(0.5, 0.0, 1.0, 1.0), // violet
+];
 
 init();
 
@@ -32,28 +74,6 @@ function init() {
 
   gl = canvas.getContext("webgl2");
   if (!gl) alert("WebGL 2.0 isn't available");
-
-  var bigCube = [
-    vec4(-0.5, -0.5, 0.5, 1.0),
-    vec4(-0.5, 0.5, 0.5, 1.0),
-    vec4(0.5, 0.5, 0.5, 1.0),
-    vec4(0.5, -0.5, 0.5, 1.0),
-    vec4(-0.5, -0.5, -0.5, 1.0),
-    vec4(-0.5, 0.5, -0.5, 1.0),
-    vec4(0.5, 0.5, -0.5, 1.0),
-    vec4(0.5, -0.5, -0.5, 1.0),
-  ];
-
-  var smallCube = [
-    vec4(-0.1, -0.5, 0.5, 1.0),
-    vec4(-0.1, 0.5, 0.5, 1.0),
-    vec4(0.1, 0.5, 0.5, 1.0),
-    vec4(0.1, -0.5, 0.5, 1.0),
-    vec4(-0.1, -0.5, -0.5, 1.0),
-    vec4(-0.1, 0.5, -0.5, 1.0),
-    vec4(0.1, 0.5, -0.5, 1.0),
-    vec4(0.1, -0.5, -0.5, 1.0),
-  ];
 
   colorCube();
 
@@ -76,16 +96,16 @@ function init() {
   gl.vertexAttribPointer(colorLoc, 4, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(colorLoc);
 
-  var vBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
+  var lBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, lBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, flatten(positions), gl.STATIC_DRAW);
 
   var lLoc = gl.getAttribLocation(program, "lPosition");
   gl.vertexAttribPointer(lLoc, 4, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(lLoc);
 
-  var vBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
+  var uBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, uBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, flatten(positions2), gl.STATIC_DRAW);
 
   var uLoc = gl.getAttribLocation(program, "uPosition");
@@ -93,6 +113,7 @@ function init() {
   gl.enableVertexAttribArray(uLoc);
 
   thetaLoc = gl.getUniformLocation(program, "uTheta");
+  tloc = gl.getUniformLocation(program, "t");
   //event listeners for buttons
 
   document.getElementById("xButton").onclick = function () {
@@ -106,14 +127,11 @@ function init() {
   };
 
   document.getElementById("Morph").onclick = function () {
-    i = 0;
     morph = !morph;
-    if (morph) {
-      test = 0.02;
-    } else if (!morph) {
-      test = -0.02;
-    }
-    render();
+  };
+
+  document.getElementById("StopRotate").onclick = function () {
+    rotate = !rotate;
   };
 
   render();
@@ -137,26 +155,6 @@ function colorCube() {
 }
 
 function quad(a, b, c, d, cn) {
-  var vertexColors = [
-    vec4(0.0, 0.0, 0.0, 1.0), // black
-    vec4(1.0, 0.0, 0.0, 1.0), // red
-    vec4(1.0, 1.0, 0.0, 1.0), // yellow
-    vec4(0.0, 1.0, 0.0, 1.0), // green
-    vec4(0.0, 0.0, 1.0, 1.0), // blue
-    vec4(1.0, 0.0, 1.0, 1.0), // magenta
-    vec4(0.2, 0.8, 0.7, 1.0), // blueish
-    vec4(0.5, 0.0, 1.0, 1.0), // violet
-
-    vec4(0.0, 0.0, 0.0, 1.0), // black
-    vec4(1.0, 0.0, 0.0, 1.0), // red
-    vec4(1.0, 1.0, 0.0, 1.0), // yellow
-    vec4(0.0, 1.0, 0.0, 1.0), // green
-    vec4(0.0, 0.0, 1.0, 1.0), // blue
-    vec4(1.0, 0.0, 1.0, 1.0), // magenta
-    vec4(0.2, 0.8, 0.7, 1.0), // blueish
-    vec4(0.5, 0.0, 1.0, 1.0), // violet
-  ];
-
   // We need to parition the quad into two triangles in order for
   // WebGL to be able to render it.  In this case, we create two
   // triangles from the quad indices
@@ -168,36 +166,28 @@ function quad(a, b, c, d, cn) {
   if (cn == 0) {
     for (var i = 0; i < indices.length; ++i) {
       positions.push(bigCube[indices[i]]);
-      colors.push(vertexColors[indices[i]]);
+      //colors.push(vertexColors[indices[i]]);
 
       // for solid colored faces use
-      //colors.push(vertexColors[a]);
+      colors.push(vertexColors[a]);
     }
   } else if ((cn = 1)) {
     for (var i = 0; i < indices.length; ++i) {
       positions2.push(smallCube[indices[i]]);
-      colors2.push(vertexColors[indices[i]]);
+      //colors2.push(vertexColors[indices[i]]);
 
       // for solid colored faces use
-      //colors.push(vertexColors[a]);
+      colors.push(vertexColors[a]);
     }
   }
-
-  document.getElementById("StopRotate").onclick = function () {
-    rotate = !rotate;
-    if (rotate) {
-      rotatenum = 2.0;
-    } else if (!rotate) {
-      rotatenum = 0.0;
-    }
-    render();
-  };
 }
 
 function render() {
-  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  if (morph) tParam += deltaT;
+  if (tParam >= 1.0 || tParam <= 0.0) deltaT = -deltaT;
+  gl.uniform1f(tLoc, tParam);
 
-  theta[axis] += rotatenum;
+  if (rotate) theta[axis] += 2.0;
   gl.uniform3fv(thetaLoc, theta);
 
   gl.drawArrays(gl.TRIANGLES, 0, numPositions);
