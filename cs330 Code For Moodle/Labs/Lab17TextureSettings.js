@@ -23,7 +23,7 @@ for (var i = 0; i < texSize; i++)
 
 var texCoordsArray = [];
 
-var texCoord = [vec2(0.5, 1), vec2(0, 0), vec2(1, 0)];
+var texCoord = [vec2(1, 1), vec2(0, 0), vec2(1, 0)];
 
 var positionsArray = [];
 var colorsArray = [];
