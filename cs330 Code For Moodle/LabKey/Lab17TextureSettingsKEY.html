@@ -1,62 +1,58 @@
 <!DOCTYPE html>
-<HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>Lab 17 Texture Settings KEY</title>
+  </head>
 
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
-<title>Lab 17 Texture Settings KEY</title>
+  <body>
+    <canvas id="gl-canvas" width="512" height="512" style="border: 2px">
+      Oops ... your browser doesn't support the HTML5 canvas element
+    </canvas>
 
-</HEAD>
+    <script id="vertex-shader" type="x-shader/x-vertex">
+      #version 300 es
 
-<BODY>
+      in vec4 aPosition;
+      in vec4 aColor;
+      in vec2 aTexCoord;
 
-<canvas id="gl-canvas" width="512" height="512" "style=border >
-Oops ... your browser doesn't support the HTML5 canvas element
-</canvas>
+      out vec4 vColor;
+      out vec2 vTexCoord;
 
-<script id="vertex-shader" type="x-shader/x-vertex">
-#version 300 es
+      void
+      main()
+      {
+        vColor = aColor;
+        vTexCoord = aTexCoord;
+        gl_Position = aPosition;
+      }
+    </script>
 
-in vec4 aPosition;
-in vec4 aColor;
-in vec2 aTexCoord;
+    <script id="fragment-shader" type="x-shader/x-fragment">
+      #version 300 es
+      precision mediump float;
 
-out vec4 vColor;
-out vec2 vTexCoord;
+      in vec4 vColor;
+      in vec2 vTexCoord;
 
-void
-main()
-{
-  vColor = aColor;
-  vTexCoord = aTexCoord;
-  gl_Position = aPosition;
-}
-</script>
+      out vec4 fColor;
 
-<script id="fragment-shader" type="x-shader/x-fragment">
-#version 300 es
-precision mediump float;
+      uniform sampler2D uTextureMap;
 
-in vec4 vColor;
-in vec2 vTexCoord;
-
-out vec4 fColor;
-
-uniform sampler2D uTextureMap;
-
-void
-main()
-{
-  //fColor = vColor;
-  // initial, masked, underlying color will show
-  fColor = vColor*texture(uTextureMap, vTexCoord);
-  // not masked, will overwrite underlying colored triangle
-  //fColor = texture(uTextureMap, vTexCoord);
-}
-</script>
-<script type="text/javascript" src="../Common/utility.js"></script>
-<script type="text/javascript" src="../Common/initShaders.js"></script>
-<script type="text/javascript" src="../Common/MVnew.js"></script>
-<script type="text/javascript" src="Lab17TextureSettingsKEY.js"></script>
-
-</BODY>
-</HTML>
+      void
+      main()
+      {
+        //fColor = vColor;
+        // initial, masked, underlying color will show
+        fColor = vColor*texture(uTextureMap, vTexCoord);
+        // not masked, will overwrite underlying colored triangle
+        //fColor = texture(uTextureMap, vTexCoord);
+      }
+    </script>
+    <script type="text/javascript" src="../Common/utility.js"></script>
+    <script type="text/javascript" src="../Common/initShaders.js"></script>
+    <script type="text/javascript" src="../Common/MVnew.js"></script>
+    <script type="text/javascript" src="Lab17TextureSettingsKEY.js"></script>
+  </body>
+</html>

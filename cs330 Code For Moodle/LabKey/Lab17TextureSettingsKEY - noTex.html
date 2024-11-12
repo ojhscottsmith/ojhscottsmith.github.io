@@ -1,51 +1,50 @@
 <!DOCTYPE html>
-<HTML>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>Lab 17 Texture Settings KEY</title>
+  </head>
 
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
-<title>Lab 17 Texture Settings KEY</title>
+  <body>
+    <canvas id="gl-canvas" width="512" height="512" style="border: 2px">
+      Oops ... your browser doesn't support the HTML5 canvas element
+    </canvas>
 
-</HEAD>
+    <script id="vertex-shader" type="x-shader/x-vertex">
+      #version 300 es
 
-<BODY>
+      in vec4 aPosition;
+      in vec4 aColor;
 
-<canvas id="gl-canvas" width="512" height="512" "style=border >
-Oops ... your browser doesn't support the HTML5 canvas element
-</canvas>
+      out vec4 vColor;
 
-<script id="vertex-shader" type="x-shader/x-vertex">
-#version 300 es
+      void
+      main()
+      {
+        vColor = aColor;
+        gl_Position = aPosition;
+      }
+    </script>
 
-in vec4 aPosition;
-in vec4 aColor;
+    <script id="fragment-shader" type="x-shader/x-fragment">
+      #version 300 es
+      precision mediump float;
 
-out vec4 vColor;
+      in vec4 vColor;
 
-void
-main()
-{
-  vColor = aColor;
-  gl_Position = aPosition;
-}
-</script>
-
-<script id="fragment-shader" type="x-shader/x-fragment">
-#version 300 es
-precision mediump float;
-
-in vec4 vColor;
-
-out vec4 fColor;
-void
-main()
-{
-  fColor = vColor;
-}
-</script>
-<script type="text/javascript" src="../Common/utility.js"></script>
-<script type="text/javascript" src="../Common/initShaders.js"></script>
-<script type="text/javascript" src="../Common/MVnew.js"></script>
-<script type="text/javascript" src="Lab17TextureSettingsKEY - noTex.js"></script>
-
-</BODY>
-</HTML>
+      out vec4 fColor;
+      void
+      main()
+      {
+        fColor = vColor;
+      }
+    </script>
+    <script type="text/javascript" src="../Common/utility.js"></script>
+    <script type="text/javascript" src="../Common/initShaders.js"></script>
+    <script type="text/javascript" src="../Common/MVnew.js"></script>
+    <script
+      type="text/javascript"
+      src="Lab17TextureSettingsKEY - noTex.js"
+    ></script>
+  </body>
+</html>
