@@ -158,7 +158,6 @@ function init() {
   };
 
   var image = document.getElementById("texImage");
-  configureTexture(image);
 
   render();
 }
@@ -168,6 +167,7 @@ function render() {
 
   if (flag) theta[axis] += 2.0;
   gl.uniform3fv(thetaLoc, theta);
+  configureTexture(image);
 
   gl.drawArrays(gl.TRIANGLES, 0, positionsArray.length);
   requestAnimationFrame(render);

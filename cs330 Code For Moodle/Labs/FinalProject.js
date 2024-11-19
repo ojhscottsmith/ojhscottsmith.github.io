@@ -9,14 +9,14 @@ var positionsArray = [];
 var colorsArray = [];
 
 var vertices = [
-  vec4(-0.5, -0.5, 1.5, 1.0),
-  vec4(-0.5, 0.5, 1.5, 1.0),
-  vec4(0.5, 0.5, 1.5, 1.0),
-  vec4(0.5, -0.5, 1.5, 1.0),
-  vec4(-0.5, -0.5, 0.5, 1.0),
-  vec4(-0.5, 0.5, 0.5, 1.0),
-  vec4(0.5, 0.5, 0.5, 1.0),
-  vec4(0.5, -0.5, 0.5, 1.0),
+  vec4(-0.5, -1.0, 0.5, 1.0),
+  vec4(-0.5, 1.0, 0.5, 1.0),
+  vec4(0.5, 1.0, 0.5, 1.0),
+  vec4(0.5, -1.0, 0.5, 1.0),
+  vec4(-0.5, -1.0, 0.2, 1.0),
+  vec4(-0.5, 1.0, 0.2, 1.0),
+  vec4(0.5, 1.0, 0.2, 1.0),
+  vec4(0.5, -1.0, 0.2, 1.0),
 ];
 
 var vertexColors = [
@@ -150,7 +150,7 @@ function render() {
   gl.drawArrays(gl.TRIANGLES, 0, numPositions);
 
   // Cube on the right
-  // Scale is "first," since it's closest to the vertex, then translate
+  // Scale is "first", since it's closest to the vertex, then translate
   // since it is left multiplied
   modelViewMatrix = lookAt(eye, at, up);
   modelViewMatrix = mult(modelViewMatrix, Tright);
