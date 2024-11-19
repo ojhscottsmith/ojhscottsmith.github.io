@@ -8,17 +8,6 @@ var numPositions = 36;
 var positionsArray = [];
 var colorsArray = [];
 
-var flag = true;
-
-var xAxis = 0;
-var yAxis = 1;
-var zAxis = 2;
-var axis = xAxis;
-
-var theta = vec3(45.0, 45.0, 45.0);
-
-var thetaLoc;
-
 var vertices = [
   vec4(-0.5, -1.0, 0.3, 1.0),
   vec4(-0.5, 1.0, 0.3, 1.0),
@@ -95,8 +84,6 @@ function init() {
 
   gl.clearColor(1.0, 1.0, 1.0, 1.0);
   gl.enable(gl.DEPTH_TEST);
-
-  thetaLoc = gl.getUniformLocation(program, "uTheta");
 
   document.getElementById("ButtonX").onclick = function () {
     axis = xAxis;
@@ -185,8 +172,5 @@ function render() {
 
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
   gl.uniformMatrix4fv(projectionMatrixLoc, false, flatten(projectionMatrix));
-  if (flag) theta[axis] += 2.0;
-  gl.uniform3fv(thetaLoc, theta);
   gl.drawArrays(gl.TRIANGLES, 0, numPositions);
-  requestAnimationFrame(render);
 }
