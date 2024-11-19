@@ -8,11 +8,13 @@ var numPositions = 36;
 var positionsArray = [];
 var colorsArray = [];
 
+var flag = true;
+
 var vertices = [
-  vec4(-0.5, -1.0, 0.5, 1.0),
-  vec4(-0.5, 1.0, 0.5, 1.0),
-  vec4(0.5, 1.0, 0.5, 1.0),
-  vec4(0.5, -1.0, 0.5, 1.0),
+  vec4(-0.5, -1.0, 0.3, 1.0),
+  vec4(-0.5, 1.0, 0.3, 1.0),
+  vec4(0.5, 1.0, 0.3, 1.0),
+  vec4(0.5, -1.0, 0.3, 1.0),
   vec4(-0.5, -1.0, 0.2, 1.0),
   vec4(-0.5, 1.0, 0.2, 1.0),
   vec4(0.5, 1.0, 0.2, 1.0),
@@ -31,7 +33,7 @@ var vertexColors = [
 ];
 
 var near = 0.3;
-var far = 3.75;
+var far = 4.2;
 var radius = 4.0;
 var theta = 0.26;
 var phi = 2.3;
