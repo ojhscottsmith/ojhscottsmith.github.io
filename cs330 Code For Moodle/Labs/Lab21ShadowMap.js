@@ -1,6 +1,6 @@
 // shadow map example
 
-// two objects: a rotatable cube and triangle
+// two objects: a rotatable plane and triangle
 // point light source behind triangle
 
 "use strict";
@@ -10,10 +10,10 @@ var gl;
 
 window.onload = init;
 
-var numCubeVertices  = 36;
+var numPlaneVertices = 6;
 var numTriangleVertices = 3;
 
-var triangleInstanceMatrix, cubeInstanceMatrix;
+var triangleInstanceMatrix, planeInstanceMatrix;
 var projectionMatrix;
 var cameraViewMatrix;
 var lightProjectionMatrix;
@@ -21,15 +21,15 @@ var lightViewMatrix;
 
 var vPosition;
 
-// initial cube rotation axis and angle
+// initial plane rotation axis and angle
 
 var xAxis = 0;
 var yAxis = 1;
 var zAxis = 2;
 var axis = 0;
-var theta =[0, 45, 0];
+var theta = [0, 45, 0];
 
-// cube rotation flag
+// plane rotation flag
 
 var flag = false;
 
@@ -45,30 +45,26 @@ var colorsArray = [];
 
 // object vertex and color data
 
-var cubeVertices = [
-    vec4(-0.5, -0.5, 0.5, 1.2),
-    vec4(-0.5, 0.5, 0.5, 1.2),
-    vec4(0.5, 0.5, 0.5, 1.2),
-    vec4(0.5, -0.5, 0.5, 1.2),
-    vec4(-0.5, -0.5, -0.5, 1.2),
-    vec4(-0.5, 0.5, -0.5, 1.2),
-    vec4(0.5, 0.5, -0.5, 1.2),
-    vec4(0.5, -0.5, -0.5, 1.2)
+var planeVertices = [
+  vec4(-0.5, -0.5, 0.5, 1.2),
+  vec4(0.5, -0.5, 0.5, 1.2),
+  vec4(-0.5, -0.5, -0.5, 1.2),
+  vec4(0.5, -0.5, -0.5, 1.2),
 ];
 
-var cubeColors = [
-    vec4(1.0, 0.0, 0.0, 1.0),  // red
-    vec4(1.0, 1.0, 0.0, 1.0),  // yellow
-    vec4(0.0, 1.0, 0.0, 1.0),  // green
-    vec4(0.0, 0.0, 1.0, 1.0),  // blue
-    vec4(1.0, 0.0, 1.0, 1.0),  // magenta
-    vec4(0.0, 1.0, 1.0, 1.0)   // cyan
+var planeColors = [
+  vec4(1.0, 0.0, 0.0, 1.0), // red
+  vec4(1.0, 1.0, 0.0, 1.0), // yellow
+  vec4(0.0, 1.0, 0.0, 1.0), // green
+  vec4(0.0, 0.0, 1.0, 1.0), // blue
+  vec4(1.0, 0.0, 1.0, 1.0), // magenta
+  vec4(0.0, 1.0, 1.0, 1.0), // cyan
 ];
 
 var triangleVertices = [
-    vec4(0.25, 1.0, 1.0, 1.0),
-    vec4(0.50, 0.5, 1.0, 1.0),
-    vec4(0.00, 0.5, 1.0, 1.0)
+  vec4(0.25, 1.0, 1.0, 1.0),
+  vec4(0.5, 0.5, 1.0, 1.0),
+  vec4(0.0, 0.5, 1.0, 1.0),
 ];
 
 var triangleColor = vec4(0.5, 0.5, 0.0, 1.0);
@@ -78,237 +74,287 @@ var triangleColor = vec4(0.5, 0.5, 0.0, 1.0);
 init();
 
 function quad(a, b, c, d) {
-     positionsArray.push(cubeVertices[a]);
-     colorsArray.push(cubeColors[a]);
-     positionsArray.push(cubeVertices[b]);
-     colorsArray.push(cubeColors[a]);
-     positionsArray.push(cubeVertices[c]);
-     colorsArray.push(cubeColors[a]);
-     positionsArray.push(cubeVertices[a]);
-     colorsArray.push(cubeColors[a]);
-     positionsArray.push(cubeVertices[c]);
-     colorsArray.push(cubeColors[a]);
-     positionsArray.push(cubeVertices[d]);
-     colorsArray.push(cubeColors[a]);
+  positionsArray.push(planeVertices[a]);
+  colorsArray.push(planeColors[a]);
+  positionsArray.push(planeVertices[b]);
+  colorsArray.push(planeColors[a]);
+  positionsArray.push(planeVertices[c]);
+  colorsArray.push(planeColors[a]);
+  positionsArray.push(planeVertices[a]);
+  colorsArray.push(planeColors[a]);
+  positionsArray.push(planeVertices[c]);
+  colorsArray.push(planeColors[a]);
+  positionsArray.push(planeVertices[d]);
+  colorsArray.push(planeColors[a]);
 }
 
-function colorCube()
-{
-    quad(0, 1, 5, 4);
-    quad(1, 0, 3, 2);
-    quad(2, 3, 7, 6);
-    quad(3, 0, 4, 7);
-    quad(4, 5, 6, 7);
-    quad(5, 1, 2, 6);
+function colorplane() {
+  //   quad(0, 1, 5, 4);
+  //   quad(1, 0, 3, 2);
+  //   quad(2, 3, 7, 6);
+  quad(1, 0, 2, 3);
+  //   quad(4, 5, 6, 7);
+  //   quad(5, 1, 2, 6);
 }
 
 function triangle(a, b, c) {
-
-     positionsArray.push(triangleVertices[a]);
-     colorsArray.push(triangleColor);
-     positionsArray.push(triangleVertices[b]);
-     colorsArray.push(triangleColor);
-     positionsArray.push(triangleVertices[c]);
-     colorsArray.push(triangleColor);
+  positionsArray.push(triangleVertices[a]);
+  colorsArray.push(triangleColor);
+  positionsArray.push(triangleVertices[b]);
+  colorsArray.push(triangleColor);
+  positionsArray.push(triangleVertices[c]);
+  colorsArray.push(triangleColor);
 }
 
 function init() {
+  canvas = document.getElementById("gl-canvas");
 
-    canvas = document.getElementById("gl-canvas");
+  gl = canvas.getContext("webgl2");
+  if (!gl) alert("WebGL 2.0 isn't available");
 
-    gl = canvas.getContext('webgl2');
-    if (!gl) alert("WebGL 2.0 isn't available");
+  gl.viewport(0, 0, canvas.width, canvas.height);
+  gl.clearColor(0.5, 0.5, 0.5, 1.0);
 
-    gl.viewport(0, 0, canvas.width, canvas.height);
-    gl.clearColor(0.5, 0.5, 0.5, 1.0);
+  gl.enable(gl.DEPTH_TEST);
 
-    gl.enable(gl.DEPTH_TEST);
+  // Create an empty texture
 
-// Create an empty texture
+  texture1 = gl.createTexture();
+  gl.activeTexture(gl.TEXTURE0);
+  gl.bindTexture(gl.TEXTURE_2D, texture1);
+  gl.texImage2D(
+    gl.TEXTURE_2D,
+    0,
+    gl.RGBA,
+    1024,
+    1024,
+    0,
+    gl.RGBA,
+    gl.UNSIGNED_BYTE,
+    null
+  );
+  gl.generateMipmap(gl.TEXTURE_2D);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 
-    texture1 = gl.createTexture();
-    gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, texture1);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1024, 1024, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-    gl.generateMipmap(gl.TEXTURE_2D);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  // Buttons
 
-// Buttons
+  document.getElementById("ButtonX").onclick = function () {
+    axis = xAxis;
+  };
+  document.getElementById("ButtonY").onclick = function () {
+    axis = yAxis;
+  };
+  document.getElementById("ButtonZ").onclick = function () {
+    axis = zAxis;
+  };
+  document.getElementById("ButtonT").onclick = function () {
+    flag = !flag;
+  };
 
-    document.getElementById("ButtonX").onclick = function(){axis = xAxis;};
-    document.getElementById("ButtonY").onclick = function(){axis = yAxis;};
-    document.getElementById("ButtonZ").onclick = function(){axis = zAxis;};
-    document.getElementById("ButtonT").onclick = function(){flag = !flag;};
+  // generate plane and triangle data
 
-// generate cube and triangle data
+  colorplane();
+  triangle(0, 1, 2);
 
-    colorCube();
-    triangle(0, 1, 2);
+  //  Load shaders and initialize attribute buffers
 
-//  Load shaders and initialize attribute buffers
+  program1 = initShaders(gl, "vertex-shader-1", "fragment-shader-1");
+  program2 = initShaders(gl, "vertex-shader-2", "fragment-shader-2");
 
-    program1 = initShaders(gl, "vertex-shader-1", "fragment-shader-1");
-    program2 = initShaders(gl, "vertex-shader-2", "fragment-shader-2");
+  vBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, flatten(positionsArray), gl.STATIC_DRAW);
 
+  var positionLoc = gl.getAttribLocation(program1, "aPosition");
+  gl.vertexAttribPointer(positionLoc, 4, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(positionLoc);
 
-    vBuffer = gl.createBuffer();
-    gl.bindBuffer( gl.ARRAY_BUFFER, vBuffer);
-    gl.bufferData( gl.ARRAY_BUFFER, flatten(positionsArray), gl.STATIC_DRAW);
+  buffer1 = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer1);
+  gl.bufferData(gl.ARRAY_BUFFER, flatten(positionsArray), gl.STATIC_DRAW);
 
-    var positionLoc = gl.getAttribLocation(program1, "aPosition");
-    gl.vertexAttribPointer(positionLoc, 4, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(positionLoc);
+  var shaderPositionLoc = gl.getAttribLocation(program2, "aPosition");
+  gl.vertexAttribPointer(shaderPositionLoc, 4, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(shaderPositionLoc);
 
-    buffer1 = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffer1);
-    gl.bufferData(gl.ARRAY_BUFFER, flatten(positionsArray), gl.STATIC_DRAW);
+  var buffer2 = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer2);
+  gl.bufferData(gl.ARRAY_BUFFER, flatten(colorsArray), gl.STATIC_DRAW);
 
-    var shaderPositionLoc = gl.getAttribLocation(program2, "aPosition");
-    gl.vertexAttribPointer(shaderPositionLoc, 4, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(shaderPositionLoc);
+  var shaderColorLoc = gl.getAttribLocation(program2, "aColor");
+  gl.vertexAttribPointer(shaderColorLoc, 4, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(shaderColorLoc);
 
-    var buffer2 = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffer2);
-    gl.bufferData(gl.ARRAY_BUFFER, flatten(colorsArray), gl.STATIC_DRAW);
-
-    var shaderColorLoc = gl.getAttribLocation( program2, "aColor");
-    gl.vertexAttribPointer(shaderColorLoc, 4, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(shaderColorLoc);
-
-    render();
+  setInterval(requestAnimationFrame(render), 500);
 }
 
 function render() {
+  // First render the objects from the light's persepctive
+  // Render into texture so we can save the distances from camera
 
-// First render the objects from the light's persepctive
-// Render into texture so we can save the distances from camera
+  // Allocate a frame buffer object
 
-// Allocate a frame buffer object
+  framebuffer = gl.createFramebuffer();
+  gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+  framebuffer.width = 1024;
+  framebuffer.height = 1024;
 
-    framebuffer = gl.createFramebuffer();
-    gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
-    framebuffer.width = 1024;
-    framebuffer.height = 1024;
+  renderbuffer = gl.createRenderbuffer();
+  gl.bindRenderbuffer(gl.RENDERBUFFER, renderbuffer);
+  gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, 1024, 1024);
 
-    renderbuffer = gl.createRenderbuffer();
-    gl.bindRenderbuffer(gl.RENDERBUFFER, renderbuffer);
-    gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, 1024, 1024);
+  // Attach color buffer
 
-    // Attach color buffer
+  gl.framebufferTexture2D(
+    gl.FRAMEBUFFER,
+    gl.COLOR_ATTACHMENT0,
+    gl.TEXTURE_2D,
+    texture1,
+    0
+  );
+  gl.framebufferRenderbuffer(
+    gl.FRAMEBUFFER,
+    gl.DEPTH_ATTACHMENT,
+    gl.RENDERBUFFER,
+    renderbuffer
+  );
 
-    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture1, 0);
-    gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, renderbuffer);
+  // check for completeness
 
-    // check for completeness
+  var status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
+  if (status != gl.FRAMEBUFFER_COMPLETE) alert("Frame Buffer Not Complete");
 
-    var status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
-    if(status != gl.FRAMEBUFFER_COMPLETE) alert('Frame Buffer Not Complete');
+  gl.useProgram(program1);
 
+  // light projection and modelview matrices
 
-    gl.useProgram(program1);
+  var fovy = 45.0;
+  var near = 3.0;
+  var far = 10.0;
+  var aspect = 1.0;
 
-// light projection and modelview matrices
+  lightProjectionMatrix = perspective(fovy, aspect, near, far);
 
-    var fovy = 45.0;
-    var near = 3.0;
-    var far = 10.0;
-    var aspect = 1.0;
+  var lightPosition = vec3(1.0, 3.0, 3.9);
 
-   lightProjectionMatrix = perspective(fovy, aspect, near, far);
+  var at = vec3(0.0, 0.0, 0.0);
+  var up = vec3(0.0, 1.0, 0.0);
 
-    var lightPosition = vec3(1.0, 3.0, 3.9);
+  lightViewMatrix = lookAt(lightPosition, at, up);
 
-    var at = vec3(0.0, 0.0, 0.0);
-    var up = vec3(0.0, 1.0, 0.0);
+  gl.uniformMatrix4fv(
+    gl.getUniformLocation(program1, "uProjectionMatrix"),
+    false,
+    flatten(lightProjectionMatrix)
+  );
 
-    lightViewMatrix = lookAt(lightPosition, at, up);
+  gl.uniformMatrix4fv(
+    gl.getUniformLocation(program1, "uModelViewMatrix"),
+    false,
+    flatten(lightViewMatrix)
+  );
 
-    gl.uniformMatrix4fv(gl.getUniformLocation(program1,
-            "uProjectionMatrix"), false, flatten(lightProjectionMatrix));
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    gl.uniformMatrix4fv(gl.getUniformLocation(program1,
-            "uModelViewMatrix"), false, flatten(lightViewMatrix));
+  // update plane rotation matrix (its instance transformation) then render cplane
 
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  if (flag) theta[axis] += 0.5;
 
-// update cube rotation matrix (its instance transformation) then render ccube
+  planeInstanceMatrix = mat4();
+  planeInstanceMatrix = mult(planeInstanceMatrix, rotateX(theta[xAxis]));
+  planeInstanceMatrix = mult(planeInstanceMatrix, rotateY(theta[yAxis]));
+  planeInstanceMatrix = mult(planeInstanceMatrix, rotateZ(theta[zAxis]));
+  gl.uniformMatrix4fv(
+    gl.getUniformLocation(program1, "uInstanceMatrix"),
+    false,
+    flatten(planeInstanceMatrix)
+  );
 
+  gl.drawArrays(gl.TRIANGLES, 0, numPlaneVertices);
 
-    if(flag) theta[axis] += 0.5;
+  // don't rotate traingle and render it
 
-    cubeInstanceMatrix = mat4();
-    cubeInstanceMatrix = mult(cubeInstanceMatrix, rotateX(theta[xAxis] ));
-    cubeInstanceMatrix = mult(cubeInstanceMatrix, rotateY(theta[yAxis]));
-    cubeInstanceMatrix = mult(cubeInstanceMatrix, rotateZ(theta[zAxis]));
-    gl.uniformMatrix4fv( gl.getUniformLocation(program1,
-            "uInstanceMatrix"), false, flatten(cubeInstanceMatrix) );
+  triangleInstanceMatrix = mat4();
 
-    gl.drawArrays(gl.TRIANGLES, 0, numCubeVertices);
+  gl.uniformMatrix4fv(
+    gl.getUniformLocation(program1, "uInstanceMatrix"),
+    false,
+    flatten(triangleInstanceMatrix)
+  );
 
-// don't rotate traingle and render it
+  gl.drawArrays(gl.TRIANGLES, numPlaneVertices, numTriangleVertices);
 
-    triangleInstanceMatrix = mat4();
+  // release buffers
 
-    gl.uniformMatrix4fv(gl.getUniformLocation(program1,
-            "uInstanceMatrix"), false, flatten(triangleInstanceMatrix));
+  gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  gl.bindRenderbuffer(gl.RENDERBUFFER, null);
 
-    gl.drawArrays(gl.TRIANGLES, numCubeVertices, numTriangleVertices);
+  //  second render from camera view pointsArray
+  // need matrices for both views so we can compare distances
 
-// release buffers
+  gl.useProgram(program2);
 
-    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-    gl.bindRenderbuffer(gl.RENDERBUFFER, null);
+  gl.activeTexture(gl.TEXTURE0);
+  gl.bindTexture(gl.TEXTURE_2D, texture1);
+  gl.uniform1i(gl.getUniformLocation(program2, "texture"), 0);
 
-//  second render from camera view pointsArray
-// need matrices for both views so we can compare distances
+  gl.clearColor(1.0, 1.0, 1.0, 1.0);
+  gl.viewport(0, 0, 1024, 1024);
 
-    gl.useProgram(program2);
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, texture1);
-    gl.uniform1i(gl.getUniformLocation(program2, "texture"), 0);
+  gl.uniformMatrix4fv(
+    gl.getUniformLocation(program2, "uLightProjectionMatrix"),
+    false,
+    flatten(lightProjectionMatrix)
+  );
 
-    gl.clearColor(1.0, 1.0, 1.0, 1.0);
-    gl.viewport(0, 0, 1024, 1024);
+  gl.uniformMatrix4fv(
+    gl.getUniformLocation(program2, "uLightViewMatrix"),
+    false,
+    flatten(lightViewMatrix)
+  );
 
-    gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  // modelView and projection matrices for camera viewpor
 
-    gl.uniformMatrix4fv(gl.getUniformLocation(program2,
-            "uLightProjectionMatrix"), false, flatten(lightProjectionMatrix));
+  projectionMatrix = ortho(-1, 1, -1, 1, -5, 5);
 
-     gl.uniformMatrix4fv(gl.getUniformLocation(program2,
-            "uLightViewMatrix"), false, flatten(lightViewMatrix));
+  gl.uniformMatrix4fv(
+    gl.getUniformLocation(program2, "uProjectionMatrix"),
+    false,
+    flatten(projectionMatrix)
+  );
 
-// modelView and projection matrices for camera viewpor
+  cameraViewMatrix = mat4();
 
-    projectionMatrix = ortho(-1, 1, -1, 1, -5, 5);
+  var cameraLoc = vec3(0, 1, 1);
+  var cameraAt = vec3(0, 0, 0);
+  var cameraUp = vec3(0, 1, 0);
 
-    gl.uniformMatrix4fv(gl.getUniformLocation(program2,
-            "uProjectionMatrix"), false, flatten(projectionMatrix));
+  cameraViewMatrix = lookAt(cameraLoc, cameraAt, cameraUp);
 
-    cameraViewMatrix = mat4();
+  gl.uniformMatrix4fv(
+    gl.getUniformLocation(program2, "uModelViewMatrix"),
+    false,
+    flatten(cameraViewMatrix)
+  );
 
-     var cameraLoc = vec3(0, 1, 1);
-     var cameraAt = vec3(0, 0, 0);
-     var cameraUp = vec3(0, 1, 0);
+  gl.uniformMatrix4fv(
+    gl.getUniformLocation(program2, "uInstanceMatrix"),
+    false,
+    flatten(planeInstanceMatrix)
+  );
+  gl.drawArrays(gl.TRIANGLES, 0, numPlaneVertices);
 
-    cameraViewMatrix = lookAt(cameraLoc, cameraAt, cameraUp);
+  gl.uniformMatrix4fv(
+    gl.getUniformLocation(program2, "uInstanceMatrix"),
+    false,
+    flatten(triangleInstanceMatrix)
+  );
+  gl.drawArrays(gl.TRIANGLES, numPlaneVertices, numTriangleVertices);
 
-    gl.uniformMatrix4fv(gl.getUniformLocation(program2,
-            "uModelViewMatrix"), false, flatten(cameraViewMatrix));
-
-    gl.uniformMatrix4fv(gl.getUniformLocation(program2,
-            "uInstanceMatrix"), false, flatten(cubeInstanceMatrix));
-    gl.drawArrays( gl.TRIANGLES, 0, numCubeVertices);
-
-
-    gl.uniformMatrix4fv(gl.getUniformLocation(program2,
-            "uInstanceMatrix"), false, flatten(triangleInstanceMatrix));
-    gl.drawArrays(gl.TRIANGLES, numCubeVertices, numTriangleVertices);
-
-    requestAnimationFrame(render)
-
+  requestAnimationFrame(render);
 }

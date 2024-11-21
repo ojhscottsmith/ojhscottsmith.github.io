@@ -5,6 +5,8 @@ var gl;
 
 var numPositions = 36;
 
+var texture;
+
 var positionsArray = [];
 var colorsArray = [];
 
@@ -19,16 +21,20 @@ var vertices = [
   vec4(0.5, -1.0, 0.2, 1.0),
 ];
 
-var vertexColors = [
-  vec4(0.0, 0.0, 0.0, 1.0), // black
-  vec4(1.0, 0.0, 0.0, 1.0), // red
-  vec4(1.0, 1.0, 0.0, 1.0), // yellow
-  vec4(0.0, 1.0, 0.0, 1.0), // green
-  vec4(0.0, 0.0, 1.0, 1.0), // blue
-  vec4(1.0, 0.0, 1.0, 1.0), // magenta
-  vec4(0.0, 1.0, 1.0, 1.0), // cyan
-  vec4(1.0, 1.0, 1.0, 1.0), // white
-];
+// var vertexColors = [
+//   vec4(0.0, 0.0, 0.0, 1.0), // black
+//   vec4(1.0, 0.0, 0.0, 1.0), // red
+//   vec4(1.0, 1.0, 0.0, 1.0), // yellow
+//   vec4(0.0, 1.0, 0.0, 1.0), // green
+//   vec4(0.0, 0.0, 1.0, 1.0), // blue
+//   vec4(1.0, 0.0, 1.0, 1.0), // magenta
+//   vec4(0.0, 1.0, 1.0, 1.0), // cyan
+//   vec4(1.0, 1.0, 1.0, 1.0), // white
+// ];
+
+var texCoordsArray = [];
+
+var texCoord = [vec2(-0.5, -1.0), vec2(-0.5, 1.0), vec2(0.5, 1), vec2(0.5, -1)];
 
 var near = 0.3;
 var far = 4.2;
@@ -45,6 +51,20 @@ var modelViewMatrix, projectionMatrix;
 var eye;
 const at = vec3(0.0, 0.0, 0.0);
 const up = vec3(0.0, 1.0, 0.0);
+
+function configureTexture(image) {
+  texture = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
+  gl.generateMipmap(gl.TEXTURE_2D);
+  gl.texParameteri(
+    gl.TEXTURE_2D,
+    gl.TEXTURE_MIN_FILTER,
+    gl.NEAREST_MIPMAP_LINEAR
+  );
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+  gl.uniform1i(gl.getUniformLocation(program, "uTextureMap"), 0);
+}
 
 function quad(a, b, c, d) {
   positionsArray.push(vertices[a]);
