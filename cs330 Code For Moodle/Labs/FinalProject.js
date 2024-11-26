@@ -36,6 +36,32 @@ var vertexColors = [
   vec4(1.0, 1.0, 1.0, 1.0), // white
 ];
 
+function quad(a, b, c, d) {
+  positionsArray.push(vertices[a]);
+  colorsArray.push(vertexColors[a]);
+  texCoordsArray.push(texCoord[0]);
+
+  positionsArray.push(vertices[b]);
+  colorsArray.push(vertexColors[a]);
+  texCoordsArray.push(texCoord[1]);
+
+  positionsArray.push(vertices[c]);
+  colorsArray.push(vertexColors[a]);
+  texCoordsArray.push(texCoord[2]);
+
+  positionsArray.push(vertices[a]);
+  colorsArray.push(vertexColors[a]);
+  texCoordsArray.push(texCoord[0]);
+
+  positionsArray.push(vertices[c]);
+  colorsArray.push(vertexColors[a]);
+  texCoordsArray.push(texCoord[2]);
+
+  positionsArray.push(vertices[d]);
+  colorsArray.push(vertexColors[a]);
+  texCoordsArray.push(texCoord[3]);
+}
+
 window.onload = init;
 
 var near = 0.3;
@@ -66,21 +92,6 @@ function configureTexture(image) {
   );
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
   gl.uniform1i(gl.getUniformLocation(program, "uTextureMap"), 0);
-}
-
-function quad(a, b, c, d) {
-  positionsArray.push(vertices[a]);
-  colorsArray.push(vertexColors[a]);
-  positionsArray.push(vertices[b]);
-  colorsArray.push(vertexColors[a]);
-  positionsArray.push(vertices[c]);
-  colorsArray.push(vertexColors[a]);
-  positionsArray.push(vertices[a]);
-  colorsArray.push(vertexColors[a]);
-  positionsArray.push(vertices[c]);
-  colorsArray.push(vertexColors[a]);
-  positionsArray.push(vertices[d]);
-  colorsArray.push(vertexColors[a]);
 }
 
 init();
