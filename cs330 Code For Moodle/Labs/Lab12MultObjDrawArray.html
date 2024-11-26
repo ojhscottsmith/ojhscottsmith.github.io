@@ -1,44 +1,48 @@
 <!DOCTYPE html>
 <html>
+  <body>
+    <canvas id="gl-canvas" width="512" height="512"> </canvas>
+    <title>Lab 12 Multiple Object Draw Array</title>
 
-<body>
-<canvas id="gl-canvas" width="512" height="512"> </canvas>
-<title>Lab 12 Multiple Object Draw Array</title>
-<script id="vertex-shader" type="x-shader/x-vertex">
-#version 300 es
+    <button id="ButtonX">Rotate X</button>
+    <button id="ButtonY">Rotate Y</button>
+    <button id="ButtonZ">Rotate Z</button>
+    <button id="ButtonT">Toggle Rotation</button>
 
-in  vec4 aPosition;
-in  vec4 aColor;
-out vec4 vColor;
+    <script id="vertex-shader" type="x-shader/x-vertex">
+      #version 300 es
 
-uniform mat4 uModelViewMatrix;
-uniform mat4 uProjectionMatrix;
+      in  vec4 aPosition;
+      in  vec4 aColor;
+      out vec4 vColor;
 
-void main()
-{
-    gl_Position = uProjectionMatrix*uModelViewMatrix*aPosition;
-    vColor = aColor;
-}
-</script>
+      uniform mat4 uModelViewMatrix;
+      uniform mat4 uProjectionMatrix;
 
-<script id="fragment-shader" type="x-shader/x-fragment">
-#version 300 es
+      void main()
+      {
+          gl_Position = uProjectionMatrix*uModelViewMatrix*aPosition;
+          vColor = aColor;
+      }
+    </script>
 
-precision mediump float;
+    <script id="fragment-shader" type="x-shader/x-fragment">
+      #version 300 es
 
-in vec4 vColor;
-out vec4 fColor;
+      precision mediump float;
 
-void
-main()
-{
-    fColor = vColor;
-}
-</script>
+      in vec4 vColor;
+      out vec4 fColor;
 
-<script src="../Common/initShaders.js"></script>
-<script src="../Common/MVnew.js"></script>
-<script src="Lab12MultObjDrawArray.js"></script>
+      void
+      main()
+      {
+          fColor = vColor;
+      }
+    </script>
 
-</body>
+    <script src="../Common/initShaders.js"></script>
+    <script src="../Common/MVnew.js"></script>
+    <script src="Lab12MultObjDrawArray.js"></script>
+  </body>
 </html>

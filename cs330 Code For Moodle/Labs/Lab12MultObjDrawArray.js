@@ -8,6 +8,16 @@ var numPositions = 36;
 var positionsArray = [];
 var colorsArray = [];
 
+var xAxis = 0;
+var yAxis = 1;
+var zAxis = 2;
+var axis = 0;
+var theta2 = vec3(0, 0, 0);
+
+var thetaLoc;
+
+var flag = false;
+
 var vertices = [
   vec4(-0.5, -0.5, 1.5, 1.0),
   vec4(-0.5, 0.5, 1.5, 1.0),
@@ -103,12 +113,28 @@ function init() {
   var vBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, flatten(positionsArray), gl.STATIC_DRAW);
+
   var positionLoc = gl.getAttribLocation(program, "aPosition");
   gl.vertexAttribPointer(positionLoc, 4, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(positionLoc);
 
+  thetaLoc = gl.getUniformLocation(program, "theta2");
+
   modelViewMatrixLoc = gl.getUniformLocation(program, "uModelViewMatrix");
   projectionMatrixLoc = gl.getUniformLocation(program, "uProjectionMatrix");
+
+  document.getElementById("ButtonX").onclick = function () {
+    axis = xAxis;
+  };
+  document.getElementById("ButtonY").onclick = function () {
+    axis = yAxis;
+  };
+  document.getElementById("ButtonZ").onclick = function () {
+    axis = zAxis;
+  };
+  document.getElementById("ButtonT").onclick = function () {
+    flag = !flag;
+  };
 
   render();
 }
@@ -157,7 +183,15 @@ function render() {
   modelViewMatrix = mult(modelViewMatrix, S);
   // update modelview matrix with required transformation(s)
 
+  if (flag) theta2[axis] += 2.0;
+
+  modelViewMatrix = mat4();
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[xAxis], vec3(1, 0, 0)));
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[yAxis], vec3(0, 1, 0)));
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[zAxis], vec3(0, 0, 1)));
+
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
   gl.uniformMatrix4fv(projectionMatrixLoc, false, flatten(projectionMatrix));
   gl.drawArrays(gl.TRIANGLES, 0, numPositions);
+  requestAnimationFrame(render);
 }
