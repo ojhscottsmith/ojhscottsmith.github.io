@@ -189,9 +189,6 @@ function init() {
 function render() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-  if (flag) theta2[axis] += 2.0;
-  gl.uniform3fv(thetaLoc, theta2);
-
   eye = vec3(
     radius * Math.sin(theta) * Math.cos(phi),
     radius * Math.sin(theta) * Math.sin(phi),
@@ -235,6 +232,9 @@ function render() {
 
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
   gl.uniformMatrix4fv(projectionMatrixLoc, false, flatten(projectionMatrix));
+
+  if (flag) theta2[axis] += 2.0;
+  gl.uniform3fv(thetaLoc, theta2);
 
   gl.drawArrays(gl.TRIANGLES, 0, numPositions);
   requestAnimationFrame(render);
