@@ -18,6 +18,8 @@ var thetaLoc;
 
 var flag = false;
 
+var program;
+
 var vertices = [
   vec4(-0.5, -0.5, 1.5, 1.0),
   vec4(-0.5, 0.5, 1.5, 1.0),
@@ -98,7 +100,7 @@ function init() {
   //
   //  Load shaders and initialize attribute buffers
   //
-  var program = initShaders(gl, "vertex-shader", "fragment-shader");
+  program = initShaders(gl, "vertex-shader", "fragment-shader");
   gl.useProgram(program);
 
   colorCube();
@@ -183,6 +185,10 @@ function render() {
   modelViewMatrix = mult(modelViewMatrix, S);
   // update modelview matrix with required transformation(s)
 
+  gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+  gl.uniformMatrix4fv(projectionMatrixLoc, false, flatten(projectionMatrix));
+  gl.drawArrays(gl.TRIANGLES, 0, numPositions);
+
   if (flag) theta2[axis] += 2.0;
 
   modelViewMatrix = mat4();
@@ -190,8 +196,11 @@ function render() {
   modelViewMatrix = mult(modelViewMatrix, rotate(theta2[yAxis], vec3(0, 1, 0)));
   modelViewMatrix = mult(modelViewMatrix, rotate(theta2[zAxis], vec3(0, 0, 1)));
 
-  gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-  gl.uniformMatrix4fv(projectionMatrixLoc, false, flatten(projectionMatrix));
-  gl.drawArrays(gl.TRIANGLES, 0, numPositions);
+  gl.uniformMatrix4fv(
+    gl.getUniformLocation(program, "uModelViewMatrix"),
+    false,
+    flatten(modelViewMatrix)
+  );
+
   requestAnimationFrame(render);
 }
