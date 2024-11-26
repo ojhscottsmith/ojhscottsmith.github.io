@@ -235,7 +235,7 @@ function render() {
 
   if (flag) theta2[axis] += 2.0;
 
-  modelViewMatrix = mat4();
+  //modelViewMatrix = mat4();
   modelViewMatrix = mult(modelViewMatrix, rotate(theta2[xAxis], vec3(1, 0, 0)));
   modelViewMatrix = mult(modelViewMatrix, rotate(theta2[yAxis], vec3(0, 1, 0)));
   modelViewMatrix = mult(modelViewMatrix, rotate(theta2[zAxis], vec3(0, 0, 1)));
