@@ -36,6 +36,8 @@ var vertexColors = [
   vec4(1.0, 1.0, 1.0, 1.0), // white
 ];
 
+window.onload = init;
+
 function configureTexture(image) {
   texture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -75,8 +77,6 @@ function quad(a, b, c, d) {
   colorsArray.push(vertexColors[a]);
   texCoordsArray.push(texCoord[3]);
 }
-
-window.onload = init;
 
 var near = 0.3;
 var far = 4.2;
