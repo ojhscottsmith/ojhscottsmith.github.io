@@ -136,7 +136,7 @@ function init() {
   //
   //  Load shaders and initialize attribute buffers
   //
-  //var program = initShaders(gl, "vertex-shader", "fragment-shader");
+  var program = initShaders(gl, "vertex-shader", "fragment-shader");
   gl.useProgram(program);
 
   colorCube();
