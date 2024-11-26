@@ -5,7 +5,7 @@ var gl;
 
 var numPositions = 36;
 
-var flag = true;
+var flag = false;
 
 var texture;
 
@@ -114,7 +114,7 @@ var yAxis = 1;
 var zAxis = 2;
 var axis = xAxis;
 
-var theta2 = vec3(45.0, 45.0, 45.0);
+var theta2 = vec3(0, 0, 0);
 
 var thetaLoc;
 
@@ -163,7 +163,7 @@ function init() {
   gl.vertexAttribPointer(texCoordLoc, 2, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(texCoordLoc);
 
-  thetaLoc = gl.getUniformLocation(program, "uTheta");
+  thetaLoc = gl.getUniformLocation(program, "Theta2");
 
   document.getElementById("ButtonX").onclick = function () {
     axis = xAxis;
@@ -233,8 +233,12 @@ function render() {
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
   gl.uniformMatrix4fv(projectionMatrixLoc, false, flatten(projectionMatrix));
 
-  if (flag) theta2[axis] += 2.0;
-  gl.uniform3fv(thetaLoc, theta2);
+  if (flag) theta[axis] += 2.0;
+
+  modelViewMatrix = mat4();
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta[xAxis], vec3(1, 0, 0)));
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta[yAxis], vec3(0, 1, 0)));
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta[zAxis], vec3(0, 0, 1)));
 
   gl.drawArrays(gl.TRIANGLES, 0, numPositions);
   requestAnimationFrame(render);
