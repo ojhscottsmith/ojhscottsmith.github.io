@@ -233,7 +233,7 @@ function render() {
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
   gl.uniformMatrix4fv(projectionMatrixLoc, false, flatten(projectionMatrix));
 
-  if (flag) theta[axis] += 2.0;
+  if (flag) theta2[axis] += 2.0;
   gl.uniform3fv(thetaLoc, theta2);
 
   gl.drawArrays(gl.TRIANGLES, 0, numPositions);
