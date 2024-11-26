@@ -113,6 +113,8 @@ function init() {
   gl = canvas.getContext("webgl2");
   if (!gl) alert("WebGL 2.0 isn't available");
 
+  colorCube();
+
   gl.viewport(0, 0, canvas.width, canvas.height);
 
   aspect = canvas.width / canvas.height;
@@ -138,8 +140,6 @@ function init() {
   //
   program = initShaders(gl, "vertex-shader", "fragment-shader");
   gl.useProgram(program);
-
-  colorCube();
 
   //color buffer
   var cBuffer = gl.createBuffer();
@@ -220,5 +220,5 @@ function render() {
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
   gl.uniformMatrix4fv(projectionMatrixLoc, false, flatten(projectionMatrix));
   gl.drawArrays(gl.TRIANGLES, 0, numPositions);
-  //requestAnimationFrame(render);
+  requestAnimationFrame(render);
 }
