@@ -89,12 +89,7 @@ function quad(a, b, c, d) {
 }
 
 function colorplane() {
-  //   quad(0, 1, 5, 4);
-  //   quad(1, 0, 3, 2);
-  //   quad(2, 3, 7, 6);
   quad(1, 0, 2, 3);
-  //   quad(4, 5, 6, 7);
-  //   quad(5, 1, 2, 6);
 }
 
 function triangle(a, b, c) {
@@ -122,17 +117,8 @@ function init() {
   texture1 = gl.createTexture();
   gl.activeTexture(gl.TEXTURE0);
   gl.bindTexture(gl.TEXTURE_2D, texture1);
-  gl.texImage2D(
-    gl.TEXTURE_2D,
-    0,
-    gl.RGBA,
-    1024,
-    1024,
-    0,
-    gl.RGBA,
-    gl.UNSIGNED_BYTE,
-    null
-  );
+  //prettier-ignore
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1024, 1024, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
   gl.generateMipmap(gl.TEXTURE_2D);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
@@ -188,7 +174,7 @@ function init() {
   gl.vertexAttribPointer(shaderColorLoc, 4, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(shaderColorLoc);
 
-  setInterval(requestAnimationFrame(render), 500);
+  render();
 }
 
 function render() {
@@ -356,5 +342,5 @@ function render() {
   );
   gl.drawArrays(gl.TRIANGLES, numPlaneVertices, numTriangleVertices);
 
-  requestAnimationFrame(render);
+  setInterval(requestAnimationFrame(render), 500);
 }

@@ -7,6 +7,10 @@ var numPositions = 36;
 
 var texture;
 
+var texCoordsArray = [];
+
+var texCoord = [vec2(-0.5, -1.0), vec2(-0.5, 1.0), vec2(0.5, 1), vec2(0.5, -1)];
+
 var positionsArray = [];
 var colorsArray = [];
 
@@ -21,20 +25,18 @@ var vertices = [
   vec4(0.5, -1.0, 0.2, 1.0),
 ];
 
-// var vertexColors = [
-//   vec4(0.0, 0.0, 0.0, 1.0), // black
-//   vec4(1.0, 0.0, 0.0, 1.0), // red
-//   vec4(1.0, 1.0, 0.0, 1.0), // yellow
-//   vec4(0.0, 1.0, 0.0, 1.0), // green
-//   vec4(0.0, 0.0, 1.0, 1.0), // blue
-//   vec4(1.0, 0.0, 1.0, 1.0), // magenta
-//   vec4(0.0, 1.0, 1.0, 1.0), // cyan
-//   vec4(1.0, 1.0, 1.0, 1.0), // white
-// ];
+var vertexColors = [
+  vec4(0.0, 0.0, 0.0, 1.0), // black
+  vec4(1.0, 0.0, 0.0, 1.0), // red
+  vec4(1.0, 1.0, 0.0, 1.0), // yellow
+  vec4(0.0, 1.0, 0.0, 1.0), // green
+  vec4(0.0, 0.0, 1.0, 1.0), // blue
+  vec4(1.0, 0.0, 1.0, 1.0), // magenta
+  vec4(0.0, 1.0, 1.0, 1.0), // cyan
+  vec4(1.0, 1.0, 1.0, 1.0), // white
+];
 
-var texCoordsArray = [];
-
-var texCoord = [vec2(-0.5, -1.0), vec2(-0.5, 1.0), vec2(0.5, 1), vec2(0.5, -1)];
+window.onload = init;
 
 var near = 0.3;
 var far = 4.2;
@@ -140,9 +142,19 @@ function init() {
   gl.vertexAttribPointer(positionLoc, 4, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(positionLoc);
 
+  // texture buffer
+  var tBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, tBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, flatten(texCoordsArray), gl.STATIC_DRAW);
+  var texCoordLoc = gl.getAttribLocation(program, "aTexCoord");
+  gl.vertexAttribPointer(texCoordLoc, 2, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(texCoordLoc);
+
   modelViewMatrixLoc = gl.getUniformLocation(program, "uModelViewMatrix");
   projectionMatrixLoc = gl.getUniformLocation(program, "uProjectionMatrix");
 
+  var image = document.getElementById("texImage");
+  configureTexture(image);
   render();
 }
 
@@ -193,4 +205,5 @@ function render() {
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
   gl.uniformMatrix4fv(projectionMatrixLoc, false, flatten(projectionMatrix));
   gl.drawArrays(gl.TRIANGLES, 0, numPositions);
+  //requestAnimationFrame(render);
 }
