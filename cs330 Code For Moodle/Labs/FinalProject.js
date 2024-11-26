@@ -69,15 +69,15 @@ function quad(a, b, c, d) {
 
   positionsArray.push(vertices[a]);
   colorsArray.push(vertexColors[a]);
-  texCoordsArray.push(texCoord[0]);
+  texCoordsArray.push(texCoord[3]);
 
   positionsArray.push(vertices[c]);
   colorsArray.push(vertexColors[a]);
-  texCoordsArray.push(texCoord[2]);
+  //texCoordsArray.push(texCoord[2]);
 
   positionsArray.push(vertices[d]);
   colorsArray.push(vertexColors[a]);
-  texCoordsArray.push(texCoord[3]);
+  //texCoordsArray.push(texCoord[3]);
 }
 
 var near = 0.3;
