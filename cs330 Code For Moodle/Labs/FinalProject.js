@@ -5,6 +5,8 @@ var gl;
 
 var numPositions = 36;
 
+var flag = true;
+
 var texture;
 
 var texCoordsArray = [];
@@ -107,6 +109,15 @@ function colorCube() {
   quad(5, 4, 0, 1);
 }
 
+var xAxis = 0;
+var yAxis = 1;
+var zAxis = 2;
+var axis = xAxis;
+
+var theta2 = vec3(45.0, 45.0, 45.0);
+
+var thetaLoc;
+
 function init() {
   canvas = document.getElementById("gl-canvas");
 
@@ -121,19 +132,6 @@ function init() {
 
   gl.clearColor(1.0, 1.0, 1.0, 1.0);
   gl.enable(gl.DEPTH_TEST);
-
-  document.getElementById("ButtonX").onclick = function () {
-    axis = xAxis;
-  };
-  document.getElementById("ButtonY").onclick = function () {
-    axis = yAxis;
-  };
-  document.getElementById("ButtonZ").onclick = function () {
-    axis = zAxis;
-  };
-  document.getElementById("ButtonT").onclick = function () {
-    flag = !flag;
-  };
 
   //
   //  Load shaders and initialize attribute buffers
@@ -164,6 +162,21 @@ function init() {
   var texCoordLoc = gl.getAttribLocation(program, "aTexCoord");
   gl.vertexAttribPointer(texCoordLoc, 2, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(texCoordLoc);
+
+  thetaLoc = gl.getUniformLocation(program, "uTheta");
+
+  document.getElementById("ButtonX").onclick = function () {
+    axis = xAxis;
+  };
+  document.getElementById("ButtonY").onclick = function () {
+    axis = yAxis;
+  };
+  document.getElementById("ButtonZ").onclick = function () {
+    axis = zAxis;
+  };
+  document.getElementById("ButtonT").onclick = function () {
+    flag = !flag;
+  };
 
   modelViewMatrixLoc = gl.getUniformLocation(program, "uModelViewMatrix");
   projectionMatrixLoc = gl.getUniformLocation(program, "uProjectionMatrix");
@@ -219,6 +232,10 @@ function render() {
 
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
   gl.uniformMatrix4fv(projectionMatrixLoc, false, flatten(projectionMatrix));
+
+  if (flag) theta[axis] += 2.0;
+  gl.uniform3fv(thetaLoc, theta2);
+
   gl.drawArrays(gl.TRIANGLES, 0, numPositions);
   requestAnimationFrame(render);
 }
