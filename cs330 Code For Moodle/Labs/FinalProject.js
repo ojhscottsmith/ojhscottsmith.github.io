@@ -14,6 +14,8 @@ var texCoord = [vec2(-0.5, -1.0), vec2(-0.5, 1.0), vec2(0.5, 1), vec2(0.5, -1)];
 var positionsArray = [];
 var colorsArray = [];
 
+var program;
+
 var vertices = [
   vec4(-0.5, -1.0, 0.3, 1.0),
   vec4(-0.5, 1.0, 0.3, 1.0),
