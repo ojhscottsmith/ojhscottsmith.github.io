@@ -82,7 +82,7 @@ function quad(a, b, c, d) {
   texCoordsArray.push(texCoord[3]);
 }
 
-var near = 0.3;
+var near = 0.8;
 var far = 4.2;
 var radius = 4.0;
 var theta = 0.26;
