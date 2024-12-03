@@ -224,8 +224,8 @@ function render() {
   modelViewMatrix = lookAt(eye, at, up);
   modelViewMatrix = mult(modelViewMatrix, S);
   modelViewMatrix = mult(modelViewMatrix, rotate(theta2[xAxis], vec3(-1, 0, 0)));
-  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[yAxis], vec3(0, -1, 0)));
-  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[zAxis], vec3(0, 0, -1)));
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[yAxis], vec3(0, 1, 0)));
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[zAxis], vec3(0, 0, 1)));
   // update modelview matrix with required transformation(s)
 
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
