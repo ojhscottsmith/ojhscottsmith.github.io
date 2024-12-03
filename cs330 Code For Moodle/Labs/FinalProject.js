@@ -191,7 +191,7 @@ function init() {
 function render() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-  if (flag) theta2[axis] += 2.0;
+  if (flag) theta2[axis] += 1.0;
 
   eye = vec3(
     radius * Math.sin(theta) * Math.cos(phi),
