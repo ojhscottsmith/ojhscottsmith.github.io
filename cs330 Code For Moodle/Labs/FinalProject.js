@@ -230,6 +230,12 @@ function render() {
   modelViewMatrix = lookAt(eye, at, up);
   modelViewMatrix = mult(modelViewMatrix, Tright);
   modelViewMatrix = mult(modelViewMatrix, S);
+  if (flag) theta2[axis] += 2.0;
+
+  //modelViewMatrix = mat4();
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[xAxis], vec3(1, 0, 0)));
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[yAxis], vec3(0, 1, 0)));
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[zAxis], vec3(0, 0, 1)));
   // update modelview matrix with required transformation(s)
   
 
@@ -237,18 +243,13 @@ function render() {
   gl.uniformMatrix4fv(projectionMatrixLoc, false, flatten(projectionMatrix));
   gl.drawArrays(gl.TRIANGLES, 0, numPositions);
 
-  if (flag) theta2[axis] += 2.0;
+  
 
-  modelViewMatrix = mat4();
-  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[xAxis], vec3(1, 0, 0)));
-  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[yAxis], vec3(0, 1, 0)));
-  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[zAxis], vec3(0, 0, 1)));
-
-  gl.uniformMatrix4fv(
-    gl.getUniformLocation(program, "uModelViewMatrix"),
-    false,
-    flatten(modelViewMatrix)
-  );
+  // gl.uniformMatrix4fv(
+  //   gl.getUniformLocation(program, "uModelViewMatrix"),
+  //   false,
+  //   flatten(modelViewMatrix)
+  // );
 
   
   requestAnimationFrame(render);
