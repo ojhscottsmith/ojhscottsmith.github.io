@@ -103,6 +103,11 @@ var yAxis = 1;
 var zAxis = 2;
 var axis = xAxis;
 
+var RxAxis = 0;
+var RyAxis = 1;
+var RzAxis = 2;
+var Raxis = RxAxis;
+
 var theta2 = vec3(0, 0, 0);
 
 var thetaLoc;
