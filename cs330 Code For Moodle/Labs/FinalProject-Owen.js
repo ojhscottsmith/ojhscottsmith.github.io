@@ -84,7 +84,7 @@ function quad(a, b, c, d) {
 
 var near = 0.3;
 var far = 4.2;
-var radius = 4.0;
+var radius = 3.6;
 var theta = 0.26;
 var phi = 2.3;
 var dr = (5.0 * Math.PI) / 180.0;
@@ -98,6 +98,20 @@ var eye;
 const at = vec3(0.0, 0.0, 0.0);
 const up = vec3(0.0, 1.0, 0.0);
 
+var xAxis = 0;
+var yAxis = 1;
+var zAxis = 2;
+var axis = xAxis;
+
+var RxAxis = 0;
+var RyAxis = 1;
+var RzAxis = 2;
+var Raxis = RxAxis;
+
+var theta2 = vec3(0, 0, 0);
+
+var thetaLoc;
+
 init();
 
 function colorCube() {
@@ -109,14 +123,7 @@ function colorCube() {
   quad(5, 4, 0, 1);
 }
 
-var xAxis = 0;
-var yAxis = 1;
-var zAxis = 2;
-var axis = xAxis;
 
-var theta2 = vec3(0, 0, 0);
-
-var thetaLoc;
 
 function init() {
   canvas = document.getElementById("gl-canvas");
@@ -167,15 +174,12 @@ function init() {
 
   document.getElementById("ButtonX").onclick = function () {
     axis = xAxis;
-    Raxis = RxAxis;
   };
   document.getElementById("ButtonY").onclick = function () {
     axis = yAxis;
-    Raxis = RyAxis;
   };
   document.getElementById("ButtonZ").onclick = function () {
     axis = zAxis;
-    Raxis = RzAxis;
   };
   document.getElementById("ButtonT").onclick = function () {
     flag = !flag;
@@ -194,8 +198,6 @@ function render() {
 
   if (flag) theta2[axis] += 1.0;
 
-  if (flag) theta2[Raxis] -= 1.0;
-
   eye = vec3(
     radius * Math.sin(theta) * Math.cos(phi),
     radius * Math.sin(theta) * Math.sin(phi),
@@ -213,6 +215,9 @@ function render() {
   modelViewMatrix = lookAt(eye, at, up);
   modelViewMatrix = mult(modelViewMatrix, Tleft);
   modelViewMatrix = mult(modelViewMatrix, S);
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[xAxis], vec3(1, 0, 0)));
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[yAxis], vec3(0, 1, 0)));
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[zAxis], vec3(0, 0, 1)));
   // update modelview matrix with required transformation(s)
 
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
@@ -223,6 +228,9 @@ function render() {
   // just need to Scale, no translate, coord are already centered
   modelViewMatrix = lookAt(eye, at, up);
   modelViewMatrix = mult(modelViewMatrix, S);
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[xAxis], vec3(1, 0, 0)));
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[yAxis], vec3(0, 1, 0)));
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[zAxis], vec3(0, 0, 1)));
   // update modelview matrix with required transformation(s)
 
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
@@ -235,16 +243,25 @@ function render() {
   modelViewMatrix = lookAt(eye, at, up);
   modelViewMatrix = mult(modelViewMatrix, Tright);
   modelViewMatrix = mult(modelViewMatrix, S);
-  // update modelview matrix with required transformation(s)
-
-  modelViewMatrix = mat4();
+  
   modelViewMatrix = mult(modelViewMatrix, rotate(theta2[xAxis], vec3(1, 0, 0)));
   modelViewMatrix = mult(modelViewMatrix, rotate(theta2[yAxis], vec3(0, 1, 0)));
   modelViewMatrix = mult(modelViewMatrix, rotate(theta2[zAxis], vec3(0, 0, 1)));
+  // update modelview matrix with required transformation(s)
+  
 
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
   gl.uniformMatrix4fv(projectionMatrixLoc, false, flatten(projectionMatrix));
-
   gl.drawArrays(gl.TRIANGLES, 0, numPositions);
+
+  
+
+  // gl.uniformMatrix4fv(
+  //   gl.getUniformLocation(program, "uModelViewMatrix"),
+  //   false,
+  //   flatten(modelViewMatrix)
+  // );
+
+  
   requestAnimationFrame(render);
 }
