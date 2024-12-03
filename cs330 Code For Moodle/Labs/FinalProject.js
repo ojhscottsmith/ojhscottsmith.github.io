@@ -103,11 +103,6 @@ var yAxis = 1;
 var zAxis = 2;
 var axis = xAxis;
 
-var RxAxis = 0;
-var RyAxis = 1;
-var RzAxis = 2;
-var Raxis = RxAxis;
-
 var theta2 = vec3(0, 0, 0);
 
 var thetaLoc;
@@ -174,15 +169,12 @@ function init() {
 
   document.getElementById("ButtonX").onclick = function () {
     axis = xAxis;
-    Raxis = RxAxis;
   };
   document.getElementById("ButtonY").onclick = function () {
     axis = yAxis;
-    Raxis = RyAxis;
   };
   document.getElementById("ButtonZ").onclick = function () {
     axis = zAxis;
-    Raxis = RzAxis;
   };
   document.getElementById("ButtonT").onclick = function () {
     flag = !flag;
@@ -200,8 +192,6 @@ function render() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
   if (flag) theta2[axis] += 1.0;
-
-  if (flag) theta2[Raxis] -= 1.0;
 
   eye = vec3(
     radius * Math.sin(theta) * Math.cos(phi),

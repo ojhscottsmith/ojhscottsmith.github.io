@@ -363,6 +363,7 @@ function init() {
 
   gl.viewport(0, 0, canvas.width, canvas.height);
   gl.clearColor(1.0, 1.0, 1.0, 1.0);
+  gl.enable(gl.DEPTH_TEST);
 
   //
   //  Load shaders and initialize attribute buffers
@@ -391,12 +392,35 @@ function init() {
 
   cube();
 
+  var nBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, nBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, flatten(normalsArray), gl.STATIC_DRAW);
+  var normalLoc = gl.getAttribLocation(program, "aNormal");
+  gl.vertexAttribPointer(normalLoc, 3, gl.FLOAT, false, 0, 0);
+  gl.enableVertexAttribArray(normalLoc);
+
   vBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, flatten(pointsArray), gl.STATIC_DRAW);
   var positionLoc = gl.getAttribLocation(program, "aPosition");
   gl.vertexAttribPointer(positionLoc, 4, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(positionLoc);
+
+  var ambientProduct = mult(lightAmbient, materialAmbient);
+  var diffuseProduct = mult(lightDiffuse, materialDiffuse);
+  var specularProduct = mult(lightSpecular, materialSpecular);
+
+  gl.uniform4fv(gl.getUniformLocation(program, "uAmbientProduct"),
+     ambientProduct);
+  gl.uniform4fv(gl.getUniformLocation(program, "uDiffuseProduct"),
+     diffuseProduct );
+  gl.uniform4fv(gl.getUniformLocation(program, "uSpecularProduct"),
+     specularProduct );
+  gl.uniform4fv(gl.getUniformLocation(program, "uLightPosition"),
+     lightPosition );
+
+  gl.uniform1f(gl.getUniformLocation(program,
+     "uShininess"), materialShininess);
 
   theta[torsoId] = 10;
   theta[head1Id] = 20;
@@ -411,11 +435,20 @@ function init() {
   theta[head2Id] = 90;
   for (i = 0; i < numNodes; i++) initNodes(i);
 
+  document.getElementById("ButtonT").onclick = function(){flag = !flag;};
   render();
 }
 
 function render() {
   gl.clear(gl.COLOR_BUFFER_BIT);
+
+  if (flag) {
+    for(i=0; i<numNodes; i++) 
+    {
+      theta[i] += i;
+      initNodes(i);
+    }
+  }
 
   traverse(torsoId);
   requestAnimationFrame(render);
