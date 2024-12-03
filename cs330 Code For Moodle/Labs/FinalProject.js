@@ -98,6 +98,15 @@ var eye;
 const at = vec3(0.0, 0.0, 0.0);
 const up = vec3(0.0, 1.0, 0.0);
 
+var xAxis = 0;
+var yAxis = 1;
+var zAxis = 2;
+var axis = xAxis;
+
+var theta2 = vec3(0, 0, 0);
+
+var thetaLoc;
+
 init();
 
 function colorCube() {
@@ -109,14 +118,7 @@ function colorCube() {
   quad(5, 4, 0, 1);
 }
 
-var xAxis = 0;
-var yAxis = 1;
-var zAxis = 2;
-var axis = xAxis;
 
-var theta2 = vec3(0, 0, 0);
-
-var thetaLoc;
 
 function init() {
   canvas = document.getElementById("gl-canvas");
@@ -206,7 +208,7 @@ function render() {
   modelViewMatrix = mult(modelViewMatrix, rotate(theta2[xAxis], vec3(1, 0, 0)));
   modelViewMatrix = mult(modelViewMatrix, rotate(theta2[yAxis], vec3(0, 1, 0)));
   modelViewMatrix = mult(modelViewMatrix, rotate(theta2[zAxis], vec3(0, 0, 1)));
-  
+
   // Cube on the left
   // Scale is "first," since it's closest to the vertex, then translate
   // since it is left multiplied
