@@ -4,6 +4,8 @@ var canvas;
 var gl;
 var program;
 
+var flag = true;
+
 var projectionMatrix;
 var modelViewMatrix;
 
