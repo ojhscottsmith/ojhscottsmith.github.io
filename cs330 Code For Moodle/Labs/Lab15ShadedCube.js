@@ -233,7 +233,7 @@ var shadedCube = function () {
   function render() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    if (flag) theta[axis] += 2.0;
+    if (flag) theta[axis] += 0.5;
 
     modelViewMatrix = mat4();
     modelViewMatrix = mult(
