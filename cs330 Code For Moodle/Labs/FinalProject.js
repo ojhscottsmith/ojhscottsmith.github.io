@@ -84,7 +84,7 @@ function quad(a, b, c, d) {
 
 var near = 0.3;
 var far = 4.2;
-var radius = 3.0;
+var radius = 3.3;
 var theta = 0.26;
 var phi = 2.3;
 var dr = (5.0 * Math.PI) / 180.0;
