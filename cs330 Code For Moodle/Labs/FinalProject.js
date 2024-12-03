@@ -202,13 +202,6 @@ function render() {
   var Tleft = translate(-1.0, 0, 0);
   var Tright = translate(1.0, 0, 0);
 
-  if (flag) theta2[axis] += 2.0;
-
-  modelViewMatrix = mat4();
-  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[xAxis], vec3(1, 0, 0)));
-  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[yAxis], vec3(0, 1, 0)));
-  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[zAxis], vec3(0, 0, 1)));
-
   // Cube on the left
   // Scale is "first," since it's closest to the vertex, then translate
   // since it is left multiplied
@@ -239,6 +232,12 @@ function render() {
   modelViewMatrix = mult(modelViewMatrix, S);
   // update modelview matrix with required transformation(s)
 
+  if (flag) theta2[axis] += 2.0;
+
+  modelViewMatrix = mat4();
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[xAxis], vec3(1, 0, 0)));
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[yAxis], vec3(0, 1, 0)));
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[zAxis], vec3(0, 0, 1)));
   
 
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
