@@ -84,7 +84,7 @@ function quad(a, b, c, d) {
 
 var near = 0.3;
 var far = 4.2;
-var radius = 4.0;
+var radius = 3.6;
 var theta = 0.26;
 var phi = 2.3;
 var dr = (5.0 * Math.PI) / 180.0;
@@ -98,6 +98,15 @@ var eye;
 const at = vec3(0.0, 0.0, 0.0);
 const up = vec3(0.0, 1.0, 0.0);
 
+var xAxis = 0;
+var yAxis = 1;
+var zAxis = 2;
+var axis = xAxis;
+
+var theta2 = vec3(0, 0, 0);
+
+var thetaLoc;
+
 init();
 
 function colorCube() {
@@ -109,14 +118,7 @@ function colorCube() {
   quad(5, 4, 0, 1);
 }
 
-var xAxis = 0;
-var yAxis = 1;
-var zAxis = 2;
-var axis = xAxis;
 
-var theta2 = vec3(0, 0, 0);
-
-var thetaLoc;
 
 function init() {
   canvas = document.getElementById("gl-canvas");
@@ -213,6 +215,9 @@ function render() {
   modelViewMatrix = lookAt(eye, at, up);
   modelViewMatrix = mult(modelViewMatrix, Tleft);
   modelViewMatrix = mult(modelViewMatrix, S);
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[xAxis], vec3(1, 0, 0)));
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[yAxis], vec3(0, 1, 0)));
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[zAxis], vec3(0, 0, 1)));
   // update modelview matrix with required transformation(s)
 
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
@@ -223,6 +228,9 @@ function render() {
   // just need to Scale, no translate, coord are already centered
   modelViewMatrix = lookAt(eye, at, up);
   modelViewMatrix = mult(modelViewMatrix, S);
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[xAxis], vec3(1, 0, 0)));
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[yAxis], vec3(0, 1, 0)));
+  modelViewMatrix = mult(modelViewMatrix, rotate(theta2[zAxis], vec3(0, 0, 1)));
   // update modelview matrix with required transformation(s)
 
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
@@ -241,10 +249,21 @@ function render() {
   modelViewMatrix = mult(modelViewMatrix, rotate(theta2[xAxis], vec3(1, 0, 0)));
   modelViewMatrix = mult(modelViewMatrix, rotate(theta2[yAxis], vec3(0, 1, 0)));
   modelViewMatrix = mult(modelViewMatrix, rotate(theta2[zAxis], vec3(0, 0, 1)));
+  // update modelview matrix with required transformation(s)
+  
 
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
   gl.uniformMatrix4fv(projectionMatrixLoc, false, flatten(projectionMatrix));
-
   gl.drawArrays(gl.TRIANGLES, 0, numPositions);
+
+  
+
+  // gl.uniformMatrix4fv(
+  //   gl.getUniformLocation(program, "uModelViewMatrix"),
+  //   false,
+  //   flatten(modelViewMatrix)
+  // );
+
+  
   requestAnimationFrame(render);
 }
