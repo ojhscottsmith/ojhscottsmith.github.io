@@ -9,7 +9,6 @@ var flag = false;
 
 var texture;
 
-var lock = false;
 
 var texCoordsArray = [];
 
@@ -177,9 +176,6 @@ function init() {
     var image = document.getElementById("texImage2");
     configureTexture(image);
   };
-  document.getElementById("ButtonL").onclick = function () {
-    lock = !lock;
-  };
   document.getElementById("ButtonX").onclick = function () {
     axis = xAxis;
   };
@@ -248,10 +244,6 @@ function render() {
   // Cube on the right
   // Scale is "first", since it's closest to the vertex, then translate
   // since it is left multiplied
-  if (lock){
-    var image = document.getElementById("texImage");
-    configureTexture(image);
-  }
   modelViewMatrix = lookAt(eye, at, up);
   modelViewMatrix = mult(modelViewMatrix, Tright);
   modelViewMatrix = mult(modelViewMatrix, S);
