@@ -167,6 +167,14 @@ function init() {
 
   thetaLoc = gl.getUniformLocation(program, "Theta2");
 
+  document.getElementById("ButtonC").onclick = function () {
+    var image = document.getElementById("texImage");
+    configureTexture(image);
+  };
+  document.getElementById("ButtonD").onclick = function () {
+    var image = document.getElementById("texImage2");
+    configureTexture(image);
+  };
   document.getElementById("ButtonX").onclick = function () {
     axis = xAxis;
   };
